@@ -41,9 +41,10 @@ public class SoundController {
     private boolean initialized, started;
 
     // Referenzen
-    private ArrayList<Sound> loadedSounds;
+    private static ArrayList<Sound> loadedSounds = new ArrayList<>();
+    private static Queue<String> playingQueue = new Queue<>();
     private ArrayList<SoundData> soundsToLoad;
-    private Queue<String> playingQueue;
+
 
     /**
      * Erzeugt ein Objekt der Klasse SoundController. Es ist nur eines dieser
@@ -54,8 +55,6 @@ public class SoundController {
         started = false;
         initialized = false;
         soundsToLoad = new ArrayList<>();
-        loadedSounds = new ArrayList<>();
-        playingQueue = new Queue<>();
         try {
             SwingUtilities.invokeLater(() -> {
                 try {
@@ -152,7 +151,7 @@ public class SoundController {
      * WICHTIGER HINWEIS: eine mp3-Datei kann evtl. nicht wiedergegeben werden, wenn spezielle Album-Art oder ähnliches integriert ist - bei Problemen erst andere mp3s testen
      * @param name Der beim Anlegen des Sounds vergebene, eindeutige Name.
      */
-    public void playSound(String name){
+    public static void playSound(String name){
         playingQueue.enqueue(name);
     }
 
@@ -160,7 +159,7 @@ public class SoundController {
      * Hält den Sound an und setzt ihn auf den Anfang zurück.
      * @param name Der beim Anlegen des Sounds vergebene, eindeutige Name.
      */
-    public void stopSound(String name){
+    public static void stopSound(String name){
         if(isPlaying(name)) {
             Iterator<Sound> iterator = loadedSounds.iterator();
             boolean searching = true;
@@ -179,7 +178,7 @@ public class SoundController {
      * @param name der eindeutige Name des Sounds
      * @return true, falls der Sound gerade abgespielt wird, sonst false
      */
-    public boolean isPlaying(String name){
+    public static boolean isPlaying(String name){
         for (Sound currentSound : loadedSounds)
             if (currentSound.getName().equals(name)) return currentSound.isPlaying();
         return false;
@@ -190,7 +189,7 @@ public class SoundController {
      * @param soundName der gesuchte Sound (muss geladen sein)
      * @param volume die neue Lautstärke (zwischen 0 und 1)
      */
-    public void setVolume(String soundName, double volume){
+    public static void setVolume(String soundName, double volume){
         Sound toChange = getSound(soundName);
         try{
             if(toChange!=null) toChange.setVolume(volume);
@@ -204,7 +203,7 @@ public class SoundController {
      * @param soundName der gesuchte Sound
      * @return das Sound-Objekt, falls vorhanden
      */
-    private Sound getSound(String soundName){
+    private static Sound getSound(String soundName){
         for (Sound currentSound : loadedSounds) if (currentSound.getName().equals(soundName)) return currentSound;
         return null;
     }

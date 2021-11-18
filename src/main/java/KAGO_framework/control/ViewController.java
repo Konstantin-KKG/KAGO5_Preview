@@ -44,7 +44,7 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
     private DrawFrame drawFrame;    // das Fenster des Programms
     private ProgramController programController; // das Objekt, das das Programm steuern soll
     private Timer gameProcess;
-    private ArrayList<Integer> currentlyPressedKeys;
+    private static ArrayList<Integer> currentlyPressedKeys = new ArrayList<>();;
     private ArrayList<Scene> scenes;
     private SoundController soundController;
 
@@ -62,7 +62,6 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
         notChangingDrawables = true;
         notChangingInteractables = true;
         scenes = new ArrayList<>();
-        currentlyPressedKeys = new ArrayList<>();
         // Erzeuge Fenster und erste Szene
         createWindow();
         // Setzt die Ziel-Zeit zwischen zwei aufeinander folgenden Frames in Millisekunden
@@ -301,7 +300,7 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
      * @param key Der Tastecode der zu überprüfenden Taste.
      * @return True, falls die entsprechende Taste momentan gedrückt ist, andernfalls false.
      */
-    public boolean isKeyDown(int key){
+    public static boolean isKeyDown(int key){
         return currentlyPressedKeys.contains(key);
     }
 

@@ -1,7 +1,7 @@
 # Projektvorlage_KAGO4_Gradle
 ###_Leere Projektvorlage für alle Projekte auf Basis von KAGO4_
 
-##Wichtig
+##Wichtig: der erste Schritt
 Nach dem initialen Klonen bitte zunächst einmal "Build" aufrufen, damit das Projekt korrekt eingerichtet wird.
 Im Anschluss sollte alles funktionieren.
 

@@ -181,6 +181,18 @@ public class GraphicalObject implements Drawable {
         return Math.sqrt( Math.pow(midX-midX2, 2) + Math.pow(midY-midY2,2));
     }
 
+    /**
+     * Bewegt das GraphicalObject in eine Richtung
+     * @param degrees Die Richtung als Winkel im Gradmaß (0° ist rechts, 90° ist unten, 180° ist links, 270° ist oben)
+     * @param speed Die Distanz, die pro Sekunde zurückgelegt werden soll
+     * @param dt Der Parameter dt aus der Methode update: die Zeit seit der letzten Frame
+     */
+    public void moveInDirection(double degrees, double speed, double dt){
+        double dx = Math.cos(degrees/180*Math.PI)*speed*dt;
+        double dy = Math.sin(degrees/180*Math.PI)*speed*dt;
+        x = x + dx;
+        y = y + dy;
+    }
 
     // Sondierende Methoden: "getter"
 
