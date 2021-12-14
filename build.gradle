@@ -19,6 +19,9 @@ javafx {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    // https://mvnrepository.com/artifact/com.intellij/forms_rt
+    // Support für den GUI-Designer von IntelliJ
+    implementation 'com.intellij:forms_rt:7.0.3'
 }
 
 test {
