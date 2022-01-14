@@ -4,10 +4,25 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'main.Main'
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest.from jar.manifest
+    from {
+        configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
 group 'org.example'
 version '1.0-SNAPSHOT'
 
 repositories {
+    flatDir dirs: "${rootDir}/libs"
     mavenCentral()
 }
 
@@ -17,8 +32,9 @@ javafx {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    compile name: 'forms_rt'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     // https://mvnrepository.com/artifact/com.intellij/forms_rt
     // Support für den GUI-Designer von IntelliJ
     implementation 'com.intellij:forms_rt:7.0.3'

@@ -2,14 +2,18 @@
 ###_Leere Projektvorlage für alle Projekte auf Basis von KAGO4_
 
 ##Wichtig: der erste Schritt
-Nach dem initialen Klonen bitte zunächst einmal unten in der Leiste oder oben über das Menü "Build" => "Build Project" (STRG+F9) aufrufen, 
+Nach dem initialen Klonen bitte zunächst einmal unten in der Leiste oder oben über das Menü "Build" => "Build Project" (STRG+F9) aufrufen,
 damit das Projekt korrekt eingerichtet wird.
 Im Anschluss sollte alles funktionieren.
 
 ###Falls nicht:
-File > Settings > Gradle suchen. Dann dort als SDK eine JDK mit Version zwischen 11 und 16 wählen und ggf. downloaden. 
-Der Eintrag "use-Gradle-from" kann auf "wrapper-task in Gradle.build-script" umgestellt werden.
-Nun sollte alles Nötige heruntergeladen werden. Eventuell danach noch Build.
+* File > Settings > Gradle suchen. Dann dort als SDK eine JDK mit Version zwischen 11 und 16 wählen und ggf. downloaden.
+* Der Eintrag "use-Gradle-from" kann auf "wrapper-task in Gradle.build-script" umgestellt werden. Ggf. muss dies nach einem Build nochmal umgestellt werden.
+* Es muss zudem bei "Build and run using" und "Run tests using" jeweils IntelliJ ausgewählt werden.
+* **Falls der GUI-Designer benutzt werden soll:**
+  * Muss außerdem unter Settings bei "GUI Designer" zum Punkt "Generate GUI into" die Angabe "Java Source Code" ausgewählt werden. (Quelle: https://boehrsi.de/posts/2020-05-30_intellij-idea-gui-builder-gradle-how-to/)
+  * Die relevante Datei ist im "libs"-Ordner: forms_rt.jar aus dem JetBrains/IntelliJ IDEA.../lib - Verzeichnis. Muss manuell aktualisiert werden, falls gewünscht.
+    Nun sollte alles Nötige heruntergeladen werden. Eventuell danach noch Build.
 
 ##Kurzanleitung: wo ist was?
 Alle wichtigen Dinge zum Arbeiten befinden sich im Ordner **src > main > java**. Hier befindet sich der Ordner "KAGO_Framework" das komplette Framework. Es ist les- und editierbar, aber alle Änderungen sind immer auf eigenes Risiko!
@@ -17,8 +21,8 @@ Alle wichtigen Dinge zum Arbeiten befinden sich im Ordner **src > main > java**.
 ###Der Ordner "my_project"
 Dies ist der Ordner zum Arbeiten.
 * In diesem Ordner findest du die Klasse "MainProgram". Mit dieser Klasse wird das Programm gestartet (Rechtsklick > Run).
-* Innerhalb von "my_project" sind außerdem die drei Unterordner "control", "model" und "view". Diese Ordner nennt man "Pakete" oder "packages". 
-  Für den Anfang kannst du dir merken, dass in "control" die Klassen gehören, die das Programm steuern und in "model" die Klassen stehen, die "Dinge" im Programm repräsentieren. 
+* Innerhalb von "my_project" sind außerdem die drei Unterordner "control", "model" und "view". Diese Ordner nennt man "Pakete" oder "packages".
+  Für den Anfang kannst du dir merken, dass in "control" die Klassen gehören, die das Programm steuern und in "model" die Klassen stehen, die "Dinge" im Programm repräsentieren.
   Du erfährst später mehr dazu.
 * Im Paket "control" befindet sich die wichtigste Klasse: "ProgramController", deren Objekt den Kern des Programms steuert.
 
