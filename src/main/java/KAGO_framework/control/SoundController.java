@@ -216,4 +216,32 @@ public class SoundController {
         return initialized;
     }
 
+    /**
+     * Ändert die Lautstärke aller geladener Sounds
+     * @author Lorenz Balzereit, Informatik LK 2021 - 2023
+     * @param volume die neue Lautstärke (zwischen 0 und 1)
+     */
+    public static void setMasterVolume(double volume) {
+        if(0 <= volume && volume <= 1) {
+            for (Sound loadedSound : loadedSounds) {
+                loadedSound.setVolume(volume);
+            }
+        }
+    }
+
+    /**
+     * Addiert eine amount auf die Lautstärke aller sounds
+     * @author Lorenz Balzereit, Informatik LK 2021 - 2023
+     * @param amount Die Menge die auf die vorherige Lautstärke addiert werden soll (Ergebnis kann nicht kleiner als 0 oder größer als 1 sein)
+     */
+    public static void addToMasterVolume(double amount) {
+        int soundAmount = loadedSounds.size();
+        for (Sound loadedSound : loadedSounds) {
+            if (0 <= loadedSound.getVolume() + amount && loadedSound.getVolume() + amount <= 1) {
+                loadedSound.setVolume(loadedSound.getVolume() + amount);
+            }
+        }
+    }
+
+
 }
