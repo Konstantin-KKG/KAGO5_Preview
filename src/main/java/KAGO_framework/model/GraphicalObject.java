@@ -159,22 +159,18 @@ public class GraphicalObject implements Drawable {
      */
     public double getDistanceTo(GraphicalObject gO){
         // Berechne die Mittelpunkte der Objekte
-        double midX, midY;
+        double midX = x;
+        double midY = y;
         if(radius == 0){
-            midX = x + width/2;
-            midY = y + height/2;
-        }else{
-            midX = x + radius;
-            midY = y+ radius;
+            midX = midX + width/2;
+            midY = midY + height/2;
         }
 
-        double midX2, midY2;
+        double midX2 = gO.getX();
+        double midY2 = gO.getY();
         if(gO.getRadius() == 0){
-            midX2 = gO.getX() + gO.getWidth()/2;
-            midY2 = gO.getY() + gO.getHeight()/2;
-        }else{
-            midX2 = gO.getX() + gO.getRadius();
-            midY2 = gO.getY() + gO.getRadius();
+            midX2 = midX2 + gO.getWidth()/2;
+            midY2 = midY2 + gO.getHeight()/2;
         }
 
         // Berechne die Distanz zwischen den Punkten mit dem Satz des Pythagoras
