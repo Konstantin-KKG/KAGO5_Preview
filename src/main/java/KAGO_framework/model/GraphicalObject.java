@@ -120,11 +120,11 @@ public class GraphicalObject implements Drawable {
             if(gO.getRadius() == 0){
                 if ( x < gO.getX()+gO.getWidth() && x + width > gO.getX() && y < gO.getY() + gO.getHeight() && y + height > gO.getY() ) return true;
             }else{
-                if ( x < gO.getX()+2*gO.getRadius() && x + width > gO.getX() && y < gO.getY() + 2*gO.getRadius() && y + height > gO.getY() ) return true;
+                if ( x < gO.getX()+gO.getRadius() && x + width > gO.getX()-gO.getRadius() && y < gO.getY() + gO.getRadius() && y + height > gO.getY()-gO.getRadius() ) return true;
             }
         }else{
             if(gO.getRadius() == 0){
-                if ( gO.getX() < x+2*radius && gO.getX() + gO.getWidth() > x && gO.getY() < y + 2*radius && gO.getY() + gO.getHeight() > y ) return true;
+                if ( gO.getX() < x+radius && gO.getX() + gO.getWidth() > x-radius && gO.getY() < y + radius && gO.getY() + gO.getHeight() > y-radius ) return true;
             }else{
                 if(getDistanceTo(gO)<=radius+gO.getRadius()) return true;
             }
