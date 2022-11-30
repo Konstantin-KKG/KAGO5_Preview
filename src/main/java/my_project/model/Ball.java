@@ -23,7 +23,7 @@ public class Ball extends GraphicalObject {
 
 
     /**
-     * Selbsterklärend: zeichnet den QueueBall. Wird vom Framework automatisch aufgerufen (jede Frame 1x).
+     * Selbsterklärend: zeichnet den die optische Repräsentation eines Ball-Objekts. Wird vom Framework automatisch aufgerufen (jeden Frame 1x).
      */
     @Override
     public void draw(DrawTool drawTool) {
@@ -34,7 +34,7 @@ public class Ball extends GraphicalObject {
     }
 
     /**
-     * Wird mit jeder Frame vom Framework aufgerufen und dient zur Manipulation des Objekts im Verlauf
+     * Wird mit jedem Frame vom Framework aufgerufen und dient zur Manipulation des Objekts im Verlauf
      * der Zeit.
      * @param dt die Sekunden, die seit dem letzten Aufruf von update vergangen sind
      */
