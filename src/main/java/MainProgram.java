@@ -1,5 +1,4 @@
-import KAGO_framework.Config;
-import KAGO_framework.control.MainController;
+import KAGO_framework.Private.Core.Launcher;
 
 public class MainProgram {
 
@@ -12,6 +11,6 @@ public class MainProgram {
      * befindet. Dort sollte deine Arbeit beginnen.
      */
     public static void main (String[] args){
-        MainController.startFramework();
+        Launcher.startFramework();
     }
 }
