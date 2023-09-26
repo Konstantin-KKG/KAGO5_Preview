@@ -1,7 +1,7 @@
 package KAGO_framework.Public.Graphics2D;
 
 import KAGO_framework.Config;
-import KAGO_framework.Private.Renderer.DrawTool;
+import KAGO_framework.Private.Renderer.Legacy2D.DrawTool;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

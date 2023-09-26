@@ -3,10 +3,10 @@ package KAGO_framework.Private.Core;
 import KAGO_framework.Config;
 import KAGO_framework.Public.Graphics2D.Drawable;
 import KAGO_framework.Public.Graphics2D.Interactable;
-import KAGO_framework.Public.Sound.SoundController;
-import KAGO_framework.Private.Renderer.DrawTool;
-import KAGO_framework.Private.Renderer.DrawFrame;
-import KAGO_framework.Private.Renderer.DrawingPanel;
+import KAGO_framework.Private.Sound.SoundController;
+import KAGO_framework.Private.Renderer.Legacy2D.DrawTool;
+import KAGO_framework.Private.Renderer.Legacy2D.DrawFrame;
+import KAGO_framework.Private.Renderer.Legacy2D.DrawingPanel;
 import My_project.control.GameController;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ import java.util.Iterator;
  * Sie kann verschiedene Objekte erzeugen und den Panels hinzufuegen.
  * Vorgegebene Klasse des Frameworks. Modifikation auf eigene Gefahr.
  */
-public class GameLoopManager implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
+public class GameStateManager implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 
     /**
      * Die innere Klasse kapselt jeweils eine Szene.
@@ -34,8 +34,8 @@ public class GameLoopManager implements ActionListener, KeyListener, MouseListen
         ArrayList<Drawable> drawables;
         ArrayList<Interactable> interactables;
 
-        Scene(GameLoopManager gameLoopManager){
-            drawingPanel = new DrawingPanel(gameLoopManager);
+        Scene(GameStateManager gameStateManager){
+            drawingPanel = new DrawingPanel(gameStateManager);
             drawingPanel.setBackground(new Color(255,255,255));
             drawables = new ArrayList<>();
             interactables = new ArrayList<>();
@@ -60,7 +60,7 @@ public class GameLoopManager implements ActionListener, KeyListener, MouseListen
     /**
      * Erzeugt ein Objekt zur Kontrolle des Programmflusses.
      */
-    GameLoopManager(){
+    GameStateManager(){
         notChangingDrawables = true;
         notChangingInteractables = true;
         scenes = new ArrayList<>();

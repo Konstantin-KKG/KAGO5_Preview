@@ -1,7 +1,8 @@
-package KAGO_framework.Public.Sound;
+package KAGO_framework.Private.Sound;
 
 import KAGO_framework.Config;
 import KAGO_framework.Public.AdvancedDataTypes.Queue;
+import KAGO_framework.Public.Sound.Sound;
 import javafx.embed.swing.JFXPanel;
 import javax.swing.*;
 import java.util.*;

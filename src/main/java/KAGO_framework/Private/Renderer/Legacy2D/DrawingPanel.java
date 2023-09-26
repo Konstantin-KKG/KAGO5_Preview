@@ -1,6 +1,6 @@
-package KAGO_framework.Private.Renderer;
+package KAGO_framework.Private.Renderer.Legacy2D;
 
-import KAGO_framework.Private.Core.GameLoopManager;
+import KAGO_framework.Private.Core.GameStateManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,14 +18,14 @@ public class DrawingPanel extends JPanel  {
 
     // Referenzen
     private DrawTool drawTool;
-    private GameLoopManager gameLoopManager;
+    private GameStateManager gameStateManager;
 
     /**
      * Konstruktor
      */
-    public DrawingPanel(GameLoopManager gameLoopManager){
+    public DrawingPanel(GameStateManager gameStateManager){
         super();
-        this.gameLoopManager = gameLoopManager;
+        this.gameStateManager = gameStateManager;
         setDoubleBuffered(true);
         drawTool = new DrawTool();
     }
@@ -36,9 +36,9 @@ public class DrawingPanel extends JPanel  {
     @Override
     public void paintComponent(Graphics g) {
         if(!requested){
-            addMouseListener(gameLoopManager);
-            addKeyListener(gameLoopManager);
-            addMouseMotionListener(gameLoopManager);
+            addMouseListener(gameStateManager);
+            addKeyListener(gameStateManager);
+            addMouseMotionListener(gameStateManager);
             setFocusable(true);
             requestFocusInWindow();
             requested = ! requested;
@@ -46,7 +46,7 @@ public class DrawingPanel extends JPanel  {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawTool.setGraphics2D(g2d,this);
-        gameLoopManager.drawAndUpdateObjects(drawTool);
+        gameStateManager.drawAndUpdateObjects(drawTool);
     }
 
 }

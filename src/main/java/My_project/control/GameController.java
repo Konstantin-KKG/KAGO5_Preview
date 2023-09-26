@@ -1,23 +1,23 @@
 package My_project.control;
 
-import KAGO_framework.Private.Core.GameLoopManager;
+import KAGO_framework.Private.Core.GameStateManager;
 import My_project.model.Ball;
 import My_project.view.GameInput;
 
 public class GameController {
 
-    private GameLoopManager gameLoopManager;
+    private GameStateManager gameStateManager;
 
-    public GameController(GameLoopManager gameLoopManager){
-        this.gameLoopManager = gameLoopManager;
+    public GameController(GameStateManager gameStateManager){
+        this.gameStateManager = gameStateManager;
     }
 
     public void startProgram() {
         Ball ball1 = new Ball(150,150);
         GameInput gameInput1 = new GameInput(this);
 
-        gameLoopManager.draw(ball1);
-        gameLoopManager.register(gameInput1);
+        gameStateManager.draw(ball1);
+        gameStateManager.register(gameInput1);
     }
 
     public void updateProgram(double dt){

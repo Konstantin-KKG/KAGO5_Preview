@@ -1,8 +1,8 @@
-package KAGO_framework.Private.Renderer.simple_gui;
+package KAGO_framework.Private.Renderer.Legacy2D.simple_gui;
 
 import KAGO_framework.Public.Graphics2D.GraphicalObject;
 import KAGO_framework.Public.AdvancedDataTypes.List;
-import KAGO_framework.Private.Renderer.DrawTool;
+import KAGO_framework.Private.Renderer.Legacy2D.DrawTool;
 
 import javax.swing.*;
 

@@ -1,4 +1,4 @@
-package KAGO_framework.Private.Renderer;
+package KAGO_framework.Private.Renderer.Legacy2D;
 
 import javax.swing.*;
 import java.awt.*;

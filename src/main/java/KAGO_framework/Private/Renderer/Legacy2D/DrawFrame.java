@@ -1,4 +1,4 @@
-package KAGO_framework.Private.Renderer;
+package KAGO_framework.Private.Renderer.Legacy2D;
 
 import KAGO_framework.Config;
 

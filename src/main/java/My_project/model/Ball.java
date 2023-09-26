@@ -1,7 +1,7 @@
 package My_project.model;
 
 import KAGO_framework.Public.Graphics2D.GraphicalObject;
-import KAGO_framework.Private.Renderer.DrawTool;
+import KAGO_framework.Private.Renderer.Legacy2D.DrawTool;
 
 import java.awt.*;
 

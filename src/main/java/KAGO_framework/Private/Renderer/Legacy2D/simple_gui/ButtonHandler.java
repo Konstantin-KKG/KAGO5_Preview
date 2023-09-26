@@ -1,6 +1,6 @@
-package KAGO_framework.Private.Renderer.simple_gui;
+package KAGO_framework.Private.Renderer.Legacy2D.simple_gui;
 
-import KAGO_framework.Private.Core.GameLoopManager;
+import KAGO_framework.Private.Core.GameStateManager;
 
 /**
  * Interface für Objekte, die Buttons erzeugen wollen
@@ -24,6 +24,6 @@ public interface ButtonHandler {
      * Stellt den Buttons den ViewController zur Verfügung
      * @return der ViewController des Frameworks
      */
-    GameLoopManager getViewController();
+    GameStateManager getViewController();
 
 }

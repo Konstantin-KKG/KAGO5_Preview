@@ -1,6 +1,6 @@
 package KAGO_framework.Public.Graphics2D;
 
-import KAGO_framework.Private.Renderer.DrawTool;
+import KAGO_framework.Private.Renderer.Legacy2D.DrawTool;
 
 /**
  * Interface für Objekte, die man zeichnen und steuern kann.

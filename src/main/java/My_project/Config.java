@@ -16,5 +16,4 @@ public class Config {
 
     // Weitere Optionen für das Projekt
     public final static boolean useSound = true;
-
 }
