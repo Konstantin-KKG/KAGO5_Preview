@@ -2,18 +2,17 @@ package KAGO_framework.Core;
 
 import KAGO_framework.Config;
 import KAGO_framework.Core.Sound.SoundController;
-import KAGO_framework.Core.Renderer.Legacy2D.DrawTool;
-import KAGO_framework.Core.Renderer.Legacy2D.DrawFrame;
-import KAGO_framework.Core.Renderer.Legacy2D.DrawingPanel;
+import KAGO_framework.Core.Graphics.Legacy2D.DrawTool;
+import KAGO_framework.Core.Graphics.Legacy2D.DrawFrame;
+import KAGO_framework.Core.Graphics.Legacy2D.DrawingPanel;
 import My_project.control.GameController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 // implements ActionListener, KeyListener, MouseListener, MouseMotionListener
-public class GameStateManager implements ActionListener {
+public class GameManager implements ActionListener {
 
     // Referenzen
     private DrawFrame drawFrame;    // das Fenster des Programms
@@ -28,29 +27,23 @@ public class GameStateManager implements ActionListener {
     private long lastLoop, elapsedTime;
     private int currentScene;
 
-    GameStateManager(){
+    GameManager(){
         // Erzeuge Fenster und erste Szene
         createWindow();
 
         // Setzt die Ziel-Zeit zwischen zwei aufeinander folgenden Frames in Millisekunden
-        dt = 35; //Vernuenftiger Startwert
+        dt = 35; // Vernuenftiger Startwert
         if ( Config.INFO_MESSAGES ) System.out.println("  > ViewController: Erzeuge ProgramController und starte Spielprozess (Min. dt = "+dt+"ms)...");
         if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird nun einmalig die Methode startProgram von dem ProgramController-Objekt aufgerufen.");
         if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird wiederholend die Methode updateProgram von dem ProgramController-Objekt aufgerufen.");
         if ( Config.INFO_MESSAGES ) System.out.println("-------------------------------------------------------------------------------------------------\n");
         if ( Config.INFO_MESSAGES ) System.out.println("** Ab hier folgt das Log zum laufenden Programm: **");
 
-        if (My_project.Config.useSound){
+        if (My_project.Config.USE_SOUND){
             soundController = new SoundController();
         } else {
             if ( Config.INFO_MESSAGES)
                 System.out.println("** Achtung! Sound deaktiviert => soundController ist NULL (kann in Config geändert werden). **");
-        }
-
-        if (!My_project.Config.SHOW_DEFAULT_WINDOW){
-            setDrawFrameVisible(false);
-            if(Config.INFO_MESSAGES)
-                System.out.println("** Achtung! Standardfenster deaktiviert => wird nicht angezeigt.). **");
         }
 
         startProgram();
@@ -74,7 +67,7 @@ public class GameStateManager implements ActionListener {
         drawFrame.setResizable(false);
 
         // Übergibt den weiteren Programmfluss an das neue Objekt der Klasse ViewController
-        if ( Config.INFO_MESSAGES) System.out.println("  > ViewController: Fenster eingerichtet. Startszene (Index: 0) angelegt.");
+        if (Config.INFO_MESSAGES) System.out.println("  > ViewController: Fenster eingerichtet. Startszene (Index: 0) angelegt.");
     }
 
     private void startProgram(){

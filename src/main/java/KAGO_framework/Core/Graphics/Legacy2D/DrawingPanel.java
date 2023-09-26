@@ -1,6 +1,6 @@
-package KAGO_framework.Core.Renderer.Legacy2D;
+package KAGO_framework.Core.Graphics.Legacy2D;
 
-import KAGO_framework.Core.GameStateManager;
+import KAGO_framework.Core.GameManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,14 +18,14 @@ public class DrawingPanel extends JPanel  {
 
     // Referenzen
     private DrawTool drawTool;
-    private GameStateManager gameStateManager;
+    private GameManager gameManager;
 
     /**
      * Konstruktor
      */
-    public DrawingPanel(GameStateManager gameStateManager){
+    public DrawingPanel(GameManager gameManager){
         super();
-        this.gameStateManager = gameStateManager;
+        this.gameManager = gameManager;
         setDoubleBuffered(true);
         drawTool = new DrawTool();
     }
@@ -49,7 +49,7 @@ public class DrawingPanel extends JPanel  {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawTool.setGraphics2D(g2d,this);
-        gameStateManager.drawAndUpdateObjects(drawTool);
+        gameManager.drawAndUpdateObjects(drawTool);
     }
 
 }

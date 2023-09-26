@@ -1,13 +1,13 @@
 package My_project.control;
 
-import KAGO_framework.Core.GameStateManager;
+import KAGO_framework.Core.GameManager;
 
 public class GameController {
 
-    private GameStateManager gameStateManager;
+    private GameManager gameManager;
 
-    public GameController(GameStateManager gameStateManager){
-        this.gameStateManager = gameStateManager;
+    public GameController(GameManager gameManager){
+        this.gameManager = gameManager;
     }
 
     public void startProgram() {

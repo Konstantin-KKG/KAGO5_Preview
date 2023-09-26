@@ -1,19 +1,19 @@
 package My_project;
 
+import KAGO_framework.Core.Graphics.RendererOptions;
+
 /**
  * In dieser Klasse werden globale, statische Einstellungen verwaltet.
  * Die Werte können nach eigenen Wünschen angepasst werden.
  */
 public class Config {
 
-    // Titel des Programms (steht oben in der Fenstertitelzeile)
-    public final static String WINDOW_TITLE = "Leeres Vorlagenprojekt des KAGO-Frameworks";
-
-    // Konfiguration des Standardfensters: Anzeige und Breite des Programmfensters (Width) und Höhe des Programmfensters (Height)
-    public final static boolean SHOW_DEFAULT_WINDOW = true;
+    // Window Settings
+    public final static String WINDOW_TITLE = "Empty Project - KAGO.5";
     public final static int WINDOW_WIDTH = 1280;
-    public final static int WINDOW_HEIGHT = 720+29;   // Effektive Höhe ist etwa 29 Pixel geringer (Titelleiste wird mitgezählt)
+    public final static int WINDOW_HEIGHT = 720 + 29; // Effektive Höhe ist etwa 29 Pixel geringer (Titelleiste wird mitgezählt)
 
-    // Weitere Optionen für das Projekt
-    public final static boolean useSound = true;
+    // Other Settings
+    public final static RendererOptions RENDERER_OPTION = RendererOptions.Legacy2D;
+    public final static boolean USE_SOUND = true;
 }
