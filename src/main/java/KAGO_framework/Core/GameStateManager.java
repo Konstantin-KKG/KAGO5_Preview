@@ -11,41 +11,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-/**
- * Diese Klasse kontrolliert die DrawingPanels einer ihr zugewiesenen DrawingFrame.
- * Sie kann verschiedene Objekte erzeugen und den Panels hinzufuegen.
- * Vorgegebene Klasse des Frameworks. Modifikation auf eigene Gefahr.
- */
-public class GameStateManager implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
-
-    /**
-     * Die innere Klasse kapselt jeweils eine Szene.
-     * Diese besteht aus einem Panel auf das gezeichnet wird und das Tastatur- und Mauseingaben empfängt.
-     * Außerdem gibt es jeweils eine Liste von Objekte, die gezeichnet und aktualisiert werden sollen
-     * und eine Liste von Objekten, die über Eingaben informiert werden sollen
-     */
-    private class Scene {
-
-        DrawingPanel drawingPanel;
-        ArrayList<Drawable> drawables;
-        ArrayList<Interactable> interactables;
-
-        Scene(GameStateManager gameStateManager){
-            drawingPanel = new DrawingPanel(gameStateManager);
-            drawingPanel.setBackground(new Color(255,255,255));
-            drawables = new ArrayList<>();
-            interactables = new ArrayList<>();
-        }
-    }
+// implements ActionListener, KeyListener, MouseListener, MouseMotionListener
+public class GameStateManager implements ActionListener {
 
     // Referenzen
     private DrawFrame drawFrame;    // das Fenster des Programms
+    private DrawingPanel drawingPanel;
     private GameController gameController; // das Objekt, das das Programm steuern soll
     private Timer gameProcess;
-    private static ArrayList<Integer> currentlyPressedKeys = new ArrayList<>();;
-    private ArrayList<Scene> scenes;
     private SoundController soundController;
 
     // Attribute
@@ -53,61 +27,35 @@ public class GameStateManager implements ActionListener, KeyListener, MouseListe
     private long lastLoop_Drawables, elapsedTime_Drawables;
     private long lastLoop, elapsedTime;
     private int currentScene;
-    private boolean notChangingInteractables, notChangingDrawables;
 
-    /**
-     * Erzeugt ein Objekt zur Kontrolle des Programmflusses.
-     */
     GameStateManager(){
-        notChangingDrawables = true;
-        notChangingInteractables = true;
-        scenes = new ArrayList<>();
         // Erzeuge Fenster und erste Szene
         createWindow();
+
         // Setzt die Ziel-Zeit zwischen zwei aufeinander folgenden Frames in Millisekunden
         dt = 35; //Vernuenftiger Startwert
-        if ( Config.INFO_MESSAGES) System.out.println("  > ViewController: Erzeuge ProgramController und starte Spielprozess (Min. dt = "+dt+"ms)...");
-        if ( Config.INFO_MESSAGES) System.out.println("     > Es wird nun einmalig die Methode startProgram von dem ProgramController-Objekt aufgerufen.");
-        if ( Config.INFO_MESSAGES) System.out.println("     > Es wird wiederholend die Methode updateProgram von dem ProgramController-Objekt aufgerufen.");
-        if ( Config.INFO_MESSAGES) System.out.println("-------------------------------------------------------------------------------------------------\n");
-        if ( Config.INFO_MESSAGES) System.out.println("** Ab hier folgt das Log zum laufenden Programm: **");
-        if(My_project.Config.useSound){
+        if ( Config.INFO_MESSAGES ) System.out.println("  > ViewController: Erzeuge ProgramController und starte Spielprozess (Min. dt = "+dt+"ms)...");
+        if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird nun einmalig die Methode startProgram von dem ProgramController-Objekt aufgerufen.");
+        if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird wiederholend die Methode updateProgram von dem ProgramController-Objekt aufgerufen.");
+        if ( Config.INFO_MESSAGES ) System.out.println("-------------------------------------------------------------------------------------------------\n");
+        if ( Config.INFO_MESSAGES ) System.out.println("** Ab hier folgt das Log zum laufenden Programm: **");
+
+        if (My_project.Config.useSound){
             soundController = new SoundController();
         } else {
-            if ( Config.INFO_MESSAGES) System.out.println("** Achtung! Sound deaktiviert => soundController ist NULL (kann in Config geändert werden). **");
+            if ( Config.INFO_MESSAGES)
+                System.out.println("** Achtung! Sound deaktiviert => soundController ist NULL (kann in Config geändert werden). **");
         }
 
         if (!My_project.Config.SHOW_DEFAULT_WINDOW){
             setDrawFrameVisible(false);
-            if(Config.INFO_MESSAGES) System.out.println("** Achtung! Standardfenster deaktiviert => wird nicht angezeigt.). **");
+            if(Config.INFO_MESSAGES)
+                System.out.println("** Achtung! Standardfenster deaktiviert => wird nicht angezeigt.). **");
         }
+
         startProgram();
     }
 
-    /**
-     * Startet das Programm, nachdem Vorarbeiten abgeschlossen sind.
-     */
-    private void startProgram(){
-        gameController = new GameController(this);
-        gameController.startProgram();
-        // Starte nebenlaeufigen Prozess, der Zeichnen und Animation uebernimmt
-        lastLoop = System.nanoTime();
-        gameProcess = new Timer(dt, this);
-        gameProcess.start();
-    }
-
-    /**
-     * Setzt den ViewController in den Startzustand zurück.
-     */
-    public void reset(){
-        scenes = new ArrayList<>();
-        createScene();
-        showScene(0);
-    }
-
-    /**
-     * Erzeugt das Fenster und die erste Szene, die sofort angezeigt wird.
-     */
     private void createWindow(){
         // Berechne Mitte des Bildschirms
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -115,143 +63,34 @@ public class GameStateManager implements ActionListener, KeyListener, MouseListe
         int height = gd.getDisplayMode().getHeight();
         int x = width / 2;
         int y = height / 2;
+
         // Berechne die beste obere linke Ecke für das Fenster so, dass es genau mittig erscheint
         x = x - My_project.Config.WINDOW_WIDTH / 2;
         y = y - My_project.Config.WINDOW_HEIGHT / 2;
-        // Erzeuge die erste Szene
-        createScene();
+
         // Erzeuge ein neues Fenster zum Zeichnen
-        drawFrame = new DrawFrame(My_project.Config.WINDOW_TITLE, x, y, My_project.Config.WINDOW_WIDTH, My_project.Config.WINDOW_HEIGHT, scenes.get(0).drawingPanel);
+        drawingPanel = new DrawingPanel(this);
+        drawFrame = new DrawFrame(My_project.Config.WINDOW_TITLE, x, y, My_project.Config.WINDOW_WIDTH, My_project.Config.WINDOW_HEIGHT, drawingPanel);
         drawFrame.setResizable(false);
-        showScene(0);
+
         // Übergibt den weiteren Programmfluss an das neue Objekt der Klasse ViewController
         if ( Config.INFO_MESSAGES) System.out.println("  > ViewController: Fenster eingerichtet. Startszene (Index: 0) angelegt.");
     }
 
-    /**
-     * Zeigt die entsprechende Szene in der DrawFrame an. Außerdem ist nur noch die Interaktion mit Objekten dieser Szene möglich.
-     * @param index Gibt die Nummer des gewünschten Drawing-Panel-Objekts an.
-     */
-    public void showScene(int index){
-        // Setze das gewuenschte DrawingPanel und lege eine Referenz darauf an.
-        if (index < scenes.size()) {
-            currentScene = index;
-            drawFrame.setActiveDrawingPanel(scenes.get(currentScene).drawingPanel);
-        } else {
-            if ( Config.INFO_MESSAGES) System.out.println("  > ViewController: Fehler: Eine Szene mit dem Index "+index+" existiert nicht.");
-        }
-    }
+    private void startProgram(){
+        gameController = new GameController(this);
+        gameController.startProgram();
 
-    /**
-     * Erzeugt ein neue, leere Szene. Diese wird nicht sofort angezeigt.
-     */
-    public void createScene(){
-        scenes.add(new Scene(this));
-    }
-
-    /**
-     * Erzeugt ein neue, leere Szene. Diese wird nicht sofort angezeigt.
-     * Überschreibt eine bestehende Szene! Wenn der Index höher als die verfügbare
-     * Szenenanzahl ist, passiert nichts.
-     */
-    public void replaceScene(int index){
-        if(scenes.size()-1<=index){
-            scenes.set(index,new Scene(this));
-        }
+        // Starte nebenlaeufigen Prozess, der Zeichnen und Animation uebernimmt
+        lastLoop = System.nanoTime();
+        gameProcess = new Timer(dt, this);
+        gameProcess.start();
     }
 
     public SoundController getSoundController(){
         return soundController;
     }
 
-    /**
-     * Zeichnet und aktualisiert ein neues Objekt in der gewünschten Szene
-     * @param d Das zu zeichnende Objekt (Interface Drawable muss implementiert werden)
-     * @param sceneIndex Die Nummer der Szene für das Objekt
-     */
-    public void draw(Drawable d, int sceneIndex){
-        if ( sceneIndex < scenes.size() && d != null){
-            SwingUtilities.invokeLater(() -> scenes.get(sceneIndex).drawables.add(d));
-        }
-    }
-
-    /**
-     * Zeichnet und aktualisiert ein neues Objekt in der aktuellen Szene
-     * @param d Das zu zeichnende Objekt.
-     */
-    public void draw(Drawable d){
-        draw(d,currentScene);
-    }
-
-    /**
-     * Fügt ein Objekt, das das Interactable-Interface implementiert zur aktuellen Szene hinzu, so
-     * dass es auf Events reagiert
-     * @param i das gewünschte Objekt
-     */
-    public void register(Interactable i){
-        register(i, currentScene);
-    }
-
-    /**
-     * Fügt ein Objekt, das das Interactable-Interface implementiert zur indizierten Szene hinzu, so
-     * dass es auf Events reagiert
-     * @param i das gewünschte Objekt
-     */
-    public void register(Interactable i, int sceneIndex){
-        if (sceneIndex < scenes.size() && i!=null){
-            SwingUtilities.invokeLater(() -> scenes.get(sceneIndex).interactables.add(i));
-        }
-    }
-
-    /**
-     * Abkuerzende Methode, um ein Objekt vom aktuellen DrawingPanel zu entfernen. Dann wird auch
-     * update vom Objekt nicht mehr aufgerufen.
-     * @param d Das zu entfernende Objekt.
-     */
-    public void removeDrawable(Drawable d){
-        removeDrawable(d,currentScene);
-    }
-
-    /**
-     * Entfernt ein Objekt aus einem DrawingPanel. Die Update- und Draw-Methode des Objekts
-     * wird dann nicht mehr aufgerufen.
-     * @param d Das zu entfernende Objekt
-     * @param sceneIndex Der Index des DrawingPanel-Objekts von dem entfernt werden soll
-     */
-    public void removeDrawable(Drawable d, int sceneIndex){
-        if ( sceneIndex < scenes.size() && d != null){
-            notChangingDrawables = false;
-            SwingUtilities.invokeLater(() -> {
-                scenes.get(sceneIndex).drawables.remove(d);
-                notChangingDrawables = true;
-            });
-        }
-    }
-
-    /**
-     * Abkuerzende Methode, um ein Objekt vom aktuellen DrawingPanel zu entfernen. Dann wird auch
-     * update vom Objekt nicht mehr aufgerufen.
-     * @param i Das zu entfernende Objekt.
-     */
-    public void removeInteractable(Interactable i){
-        removeInteractable(i,currentScene);
-    }
-
-    /**
-     * Entfernt ein Objekt aus einem DrawingPanel. Die Update- und Draw-Methode des Objekts
-     * wird dann nicht mehr aufgerufen.
-     * @param i Das zu entfernende Objekt
-     * @param sceneIndex Der Index des DrawingPanel-Objekts von dem entfernt werden soll
-     */
-    public void removeInteractable(Interactable i, int sceneIndex){
-        if ( sceneIndex < scenes.size() && i != null){
-            notChangingInteractables = false;
-            SwingUtilities.invokeLater(() -> {
-                scenes.get(sceneIndex).interactables.remove(i);
-                notChangingInteractables = true;
-            });
-        }
-    }
 
     /**
      * Wird vom Timer-Thread aufgerufen. Es wird dafuer gesorgt, dass das aktuelle Drawing-Panel
@@ -266,13 +105,14 @@ public class GameStateManager implements ActionListener, KeyListener, MouseListe
         lastLoop = System.nanoTime();
         int dt = (int) ((elapsedTime / 1000000L));
         double dtSeconds = (double)dt/1000;
-        if ( dtSeconds == 0 ) dtSeconds = 0.01;
+        if (dtSeconds == 0)
+            dtSeconds = 0.01;
+
         // Führe Berechnungen und Aktualisierungen im Hauptobjekt aus
         gameController.updateProgram(dtSeconds);
-        // Zeichne alle Objekte der aktuellen Szene
-        scenes.get(currentScene).drawingPanel.repaint();
+
         // Aktualisiere SoundController, wenn vorhanden
-        if(soundController != null) soundController.update(dtSeconds);
+        if (soundController != null) soundController.update(dtSeconds);
     }
 
     /**
@@ -285,23 +125,8 @@ public class GameStateManager implements ActionListener, KeyListener, MouseListe
         lastLoop_Drawables = System.nanoTime();
         int dt = (int) ((elapsedTime / 1000000L));
         double dtSeconds = (double)dt/1000;
-        if ( dtSeconds == 0 ) dtSeconds = 0.01;
-        Iterator<Drawable> drawIterator = scenes.get(currentScene).drawables.iterator();
-        while (drawIterator.hasNext() && notChangingDrawables){
-            Drawable currentObject = drawIterator.next();
-            currentObject.draw(drawTool);
-            currentObject.update(dtSeconds);
-            if (My_project.Config.useSound && soundController != null) soundController.update(dtSeconds);
-        }
-    }
-
-    /**
-     * Diese Methode überprüft, ob die angebene Taste momentan heruntergedrückt ist.
-     * @param key Der Tastecode der zu überprüfenden Taste.
-     * @return True, falls die entsprechende Taste momentan gedrückt ist, andernfalls false.
-     */
-    public static boolean isKeyDown(int key){
-        return currentlyPressedKeys.contains(key);
+        if ( dtSeconds == 0 )
+            dtSeconds = 0.01;
     }
 
     /**
@@ -319,89 +144,4 @@ public class GameStateManager implements ActionListener, KeyListener, MouseListe
     public void setDrawFrameVisible(boolean b){
         drawFrame.setVisible(b);
     }
-
-    /* INTERFACE METHODEN */
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
-        while (iterator.hasNext() && notChangingInteractables){
-            Interactable tmpInteractable = iterator.next();
-            tmpInteractable.mouseReleased(e);
-        }
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // Wird momentan nicht unterstützt
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // Wird momentan nicht unterstützt
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        //programController.mouseClicked(e); entfernt 11.11.21 KNB - Simplifizierung & MVC für ProgramController
-        Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
-        while (iterator.hasNext() && notChangingInteractables){
-            Interactable tmpInteractable = iterator.next();
-            tmpInteractable.mouseClicked(e);
-        }
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
-        while (iterator.hasNext() && notChangingInteractables){
-            Interactable tmpInteractable = iterator.next();
-            tmpInteractable.mouseDragged(e);
-        }
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
-        while (iterator.hasNext() && notChangingInteractables){
-            Interactable tmpInteractable = iterator.next();
-            tmpInteractable.mouseMoved(e);
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
-        while (iterator.hasNext() && notChangingInteractables){
-            Interactable tmpInteractable = iterator.next();
-            tmpInteractable.mousePressed(e);
-        }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // wird momentan nicht unterstützt => einfach keyReleased verwenden
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (!currentlyPressedKeys.contains(e.getKeyCode())) currentlyPressedKeys.add(e.getKeyCode());
-        Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
-        while (iterator.hasNext() && notChangingInteractables){
-            Interactable tmpInteractable = iterator.next();
-            tmpInteractable.keyPressed(e.getKeyCode());
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (currentlyPressedKeys.contains(e.getKeyCode()))
-            currentlyPressedKeys.remove(Integer.valueOf(e.getKeyCode()));
-        Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
-        while (iterator.hasNext() && notChangingInteractables){
-            Interactable tmpInteractable = iterator.next();
-            tmpInteractable.keyReleased(e.getKeyCode());
-        }
-    }
-
 }

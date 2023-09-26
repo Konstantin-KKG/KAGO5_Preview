@@ -36,13 +36,16 @@ public class DrawingPanel extends JPanel  {
     @Override
     public void paintComponent(Graphics g) {
         if(!requested){
-            addMouseListener(gameStateManager);
-            addKeyListener(gameStateManager);
-            addMouseMotionListener(gameStateManager);
+            // TODO: Input
+            // addMouseListener(gameStateManager);
+            // addKeyListener(gameStateManager);
+            // addMouseMotionListener(gameStateManager);
+
             setFocusable(true);
             requestFocusInWindow();
             requested = ! requested;
         }
+
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawTool.setGraphics2D(g2d,this);
