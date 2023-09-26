@@ -1,4 +1,4 @@
-import KAGO_framework.Private.Core.Launcher;
+import KAGO_framework.Core.Launcher;
 
 public class Main {
 

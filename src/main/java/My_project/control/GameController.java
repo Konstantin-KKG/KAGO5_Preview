@@ -1,6 +1,6 @@
 package My_project.control;
 
-import KAGO_framework.Private.Core.GameStateManager;
+import KAGO_framework.Core.GameStateManager;
 import My_project.model.Ball;
 import My_project.view.GameInput;
 

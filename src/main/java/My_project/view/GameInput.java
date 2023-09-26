@@ -1,6 +1,6 @@
 package My_project.view;
 
-import KAGO_framework.Public.Graphics2D.Interactable;
+import KAGO_framework.Core.Graphics2D.Interactable;
 import My_project.control.GameController;
 import java.awt.event.MouseEvent;
 
