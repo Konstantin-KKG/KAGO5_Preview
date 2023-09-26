@@ -1,8 +1,6 @@
 package KAGO_framework.Core;
 
 import KAGO_framework.Config;
-import KAGO_framework.Core.Graphics2D.Drawable;
-import KAGO_framework.Core.Graphics2D.Interactable;
 import KAGO_framework.Core.Sound.SoundController;
 import KAGO_framework.Core.Renderer.Legacy2D.DrawTool;
 import KAGO_framework.Core.Renderer.Legacy2D.DrawFrame;
