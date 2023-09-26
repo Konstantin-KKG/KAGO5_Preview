@@ -1,6 +1,6 @@
 package KAGO_framework.Private.Renderer;
 
-import KAGO_framework.Private.Core.ViewController;
+import KAGO_framework.Private.Core.GameLoopManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,14 +18,14 @@ public class DrawingPanel extends JPanel  {
 
     // Referenzen
     private DrawTool drawTool;
-    private ViewController viewController;
+    private GameLoopManager gameLoopManager;
 
     /**
      * Konstruktor
      */
-    public DrawingPanel(ViewController viewController){
+    public DrawingPanel(GameLoopManager gameLoopManager){
         super();
-        this.viewController = viewController;
+        this.gameLoopManager = gameLoopManager;
         setDoubleBuffered(true);
         drawTool = new DrawTool();
     }
@@ -36,9 +36,9 @@ public class DrawingPanel extends JPanel  {
     @Override
     public void paintComponent(Graphics g) {
         if(!requested){
-            addMouseListener(viewController);
-            addKeyListener(viewController);
-            addMouseMotionListener(viewController);
+            addMouseListener(gameLoopManager);
+            addKeyListener(gameLoopManager);
+            addMouseMotionListener(gameLoopManager);
             setFocusable(true);
             requestFocusInWindow();
             requested = ! requested;
@@ -46,7 +46,7 @@ public class DrawingPanel extends JPanel  {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawTool.setGraphics2D(g2d,this);
-        viewController.drawAndUpdateObjects(drawTool);
+        gameLoopManager.drawAndUpdateObjects(drawTool);
     }
 
 }

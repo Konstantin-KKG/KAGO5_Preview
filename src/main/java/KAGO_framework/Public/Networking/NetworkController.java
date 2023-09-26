@@ -1,7 +1,7 @@
 package KAGO_framework.Public.Networking;
 
 import KAGO_framework.Config;
-import My_project.control.ProgramController;
+import My_project.control.GameController;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public abstract class NetworkController{
 
     //Referenzen
     protected NetworkClient networkClient;
-    protected ProgramController programController;
+    protected GameController gameController;
 
     //Attribute
     protected String serverIP;
@@ -56,14 +56,14 @@ public abstract class NetworkController{
 
     /**
      * Erzeugt ein neues Objekt der Klasse NetworkController
-     * @param programController der zum Framework gehörende ProgramController
+     * @param gameController der zum Framework gehörende ProgramController
      */
-    public NetworkController(ProgramController programController){
+    public NetworkController(GameController gameController){
         port = -1;
         serverIP = null;
         isWorking = false;
         maximumCycles = 20; // Anzahl der Suchdurchläufe
-        this.programController = programController;
+        this.gameController = gameController;
     }
 
     /**

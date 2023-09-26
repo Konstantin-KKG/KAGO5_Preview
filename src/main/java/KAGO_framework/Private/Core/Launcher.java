@@ -42,7 +42,7 @@ public class Launcher {
      */
     public Launcher(){
         if ( Config.INFO_MESSAGES) System.out.println("  > MainController: Ich wurde erzeugt. Erstelle ein ViewController-Objekt zur Steuerung der View...");
-        new ViewController();
+        new GameLoopManager();
     }
 
 }

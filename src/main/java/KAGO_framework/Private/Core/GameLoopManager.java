@@ -5,10 +5,9 @@ import KAGO_framework.Public.Graphics2D.Drawable;
 import KAGO_framework.Public.Graphics2D.Interactable;
 import KAGO_framework.Public.Sound.SoundController;
 import KAGO_framework.Private.Renderer.DrawTool;
-//import KAGO_scenario_framework.control.ScenarioController;
-import My_project.control.ProgramController;
 import KAGO_framework.Private.Renderer.DrawFrame;
 import KAGO_framework.Private.Renderer.DrawingPanel;
+import My_project.control.GameController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +20,7 @@ import java.util.Iterator;
  * Sie kann verschiedene Objekte erzeugen und den Panels hinzufuegen.
  * Vorgegebene Klasse des Frameworks. Modifikation auf eigene Gefahr.
  */
-public class ViewController implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
+public class GameLoopManager implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 
     /**
      * Die innere Klasse kapselt jeweils eine Szene.
@@ -35,8 +34,8 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
         ArrayList<Drawable> drawables;
         ArrayList<Interactable> interactables;
 
-        Scene(ViewController viewController){
-            drawingPanel = new DrawingPanel(viewController);
+        Scene(GameLoopManager gameLoopManager){
+            drawingPanel = new DrawingPanel(gameLoopManager);
             drawingPanel.setBackground(new Color(255,255,255));
             drawables = new ArrayList<>();
             interactables = new ArrayList<>();
@@ -45,7 +44,7 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
 
     // Referenzen
     private DrawFrame drawFrame;    // das Fenster des Programms
-    private ProgramController programController; // das Objekt, das das Programm steuern soll
+    private GameController gameController; // das Objekt, das das Programm steuern soll
     private Timer gameProcess;
     private static ArrayList<Integer> currentlyPressedKeys = new ArrayList<>();;
     private ArrayList<Scene> scenes;
@@ -61,7 +60,7 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
     /**
      * Erzeugt ein Objekt zur Kontrolle des Programmflusses.
      */
-    ViewController(){
+    GameLoopManager(){
         notChangingDrawables = true;
         notChangingInteractables = true;
         scenes = new ArrayList<>();
@@ -91,8 +90,8 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
      * Startet das Programm, nachdem Vorarbeiten abgeschlossen sind.
      */
     private void startProgram(){
-        programController = new ProgramController(this);
-        programController.startProgram();
+        gameController = new GameController(this);
+        gameController.startProgram();
         // Starte nebenlaeufigen Prozess, der Zeichnen und Animation uebernimmt
         lastLoop = System.nanoTime();
         gameProcess = new Timer(dt, this);
@@ -271,7 +270,7 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
         double dtSeconds = (double)dt/1000;
         if ( dtSeconds == 0 ) dtSeconds = 0.01;
         // Führe Berechnungen und Aktualisierungen im Hauptobjekt aus
-        programController.updateProgram(dtSeconds);
+        gameController.updateProgram(dtSeconds);
         // Zeichne alle Objekte der aktuellen Szene
         scenes.get(currentScene).drawingPanel.repaint();
         // Aktualisiere SoundController, wenn vorhanden
