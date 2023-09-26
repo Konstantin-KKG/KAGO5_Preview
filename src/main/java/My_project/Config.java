@@ -15,5 +15,5 @@ public class Config {
 
     // Other Settings
     public final static RendererOptions RENDERER_OPTION = RendererOptions.Legacy2D;
-    public final static boolean USE_SOUND = true;
+    public final static boolean USE_SOUND = false;
 }
