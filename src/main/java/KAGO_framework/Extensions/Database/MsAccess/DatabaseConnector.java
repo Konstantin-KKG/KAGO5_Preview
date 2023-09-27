@@ -1,4 +1,4 @@
-package KAGO_framework.Extensions.Database.msaccess;
+package KAGO_framework.Extensions.Database.MsAccess;
 
 import KAGO_framework.Extensions.AdvancedDataTypes.Queue;
 

@@ -1,4 +1,4 @@
-package KAGO_framework.Extensions.Database.mysql;
+package KAGO_framework.Extensions.Database.SqlLite;
 
 import KAGO_framework.Extensions.AdvancedDataTypes.Queue;
 
@@ -13,7 +13,7 @@ import java.sql.*;
  * </p>
  * <p>
  * Ein Objekt der Klasse DatabaseConnector ermoeglicht die Abfrage und Manipulation 
- * einer MySQL-Datenbank. 
+ * einer SQLite-Datenbank. 
  * Beim Erzeugen des Objekts wird eine Datenbankverbindung aufgebaut, so dass 
  * anschließend SQL-Anweisungen an diese Datenbank gerichtet werden koennen.
  * </p>
@@ -22,11 +22,11 @@ import java.sql.*;
  * @version 2016-01-24
  */
 public class DatabaseConnector{
-  private java.sql.Connection connection;  
+  private Connection connection;  
   private QueryResult currentQueryResult = null;
   private String message = null;
 
-    /**
+  /**
    * Ein Objekt vom Typ DatabaseConnector wird erstellt, und eine Verbindung zur Datenbank 
    * wird aufgebaut. Mit den Parametern pIP und pPort werden die IP-Adresse und die 
    * Port-Nummer uebergeben, unter denen die Datenbank mit Namen pDatabase zu erreichen ist. 
@@ -34,12 +34,14 @@ public class DatabaseConnector{
    * Datenbank uebergeben.
    */
   public DatabaseConnector(String pIP, int pPort, String pDatabase, String pUsername, String pPassword){
+    //Eine Impementierung dieser Schnittstelle fuer SQLite ignoriert pID und pPort, da die Datenbank immer lokal ist. 
+    //Auch pUsername und pPassword werden nicht verwendet, da SQLite sie nicht unterstuetzt.
     try {
       //Laden der Treiberklasse
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("org.sqlite.JDBC");
 
       //Verbindung herstellen
-      connection = DriverManager.getConnection("jdbc:mysql://"+pIP+":"+pPort+"/"+pDatabase, pUsername, pPassword);
+      connection = DriverManager.getConnection("jdbc:sqlite:"+pDatabase);
 
     } catch (Exception e) {
       message = e.getMessage();
