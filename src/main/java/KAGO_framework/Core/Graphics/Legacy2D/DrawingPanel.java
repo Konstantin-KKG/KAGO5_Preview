@@ -18,14 +18,14 @@ public class DrawingPanel extends JPanel  {
 
     // Referenzen
     private DrawTool drawTool;
-    private GameManager gameManager;
+    private OldGameManager oldGameManager;
 
     /**
      * Konstruktor
      */
-    public DrawingPanel(GameManager gameManager){
+    public DrawingPanel(OldGameManager oldGameManager){
         super();
-        this.gameManager = gameManager;
+        this.oldGameManager = oldGameManager;
         setDoubleBuffered(true);
         drawTool = new DrawTool();
     }
@@ -49,7 +49,7 @@ public class DrawingPanel extends JPanel  {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawTool.setGraphics2D(g2d,this);
-        gameManager.drawAndUpdateObjects(drawTool);
+        oldGameManager.drawAndUpdateObjects(drawTool);
     }
 
 }

@@ -1,4 +1,4 @@
-package My_project;
+package MyProject;
 
 import KAGO_framework.Core.Graphics.RendererOptions;
 
