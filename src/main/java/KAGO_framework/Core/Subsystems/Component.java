@@ -1,4 +1,4 @@
-package KAGO_framework.Core;
+package KAGO_framework.Core.Subsystems;
 
 import java.lang.reflect.Type;
 

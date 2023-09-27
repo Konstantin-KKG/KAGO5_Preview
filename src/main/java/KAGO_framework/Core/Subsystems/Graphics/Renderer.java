@@ -7,6 +7,7 @@ public abstract class Renderer {
     // - Lines,
     // - Squares,
     // - Circles,
-    // - Textures,
+
+    // - Sprites,
     // - 3D Models (If supported)
 }
