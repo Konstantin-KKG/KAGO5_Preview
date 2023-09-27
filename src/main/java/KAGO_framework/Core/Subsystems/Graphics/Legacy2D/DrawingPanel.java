@@ -1,6 +1,4 @@
-package KAGO_framework.Core.Graphics.Legacy2D;
-
-import KAGO_framework.Core.GameManager;
+package KAGO_framework.Core.Subsystems.Graphics.Legacy2D;
 
 import javax.swing.*;
 import java.awt.*;

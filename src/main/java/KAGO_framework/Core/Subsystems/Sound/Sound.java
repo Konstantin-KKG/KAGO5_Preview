@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Sound;
+package KAGO_framework.Core.Subsystems.Sound;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

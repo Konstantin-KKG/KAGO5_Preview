@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Graphics;
+package KAGO_framework.Core.Subsystems.Graphics;
 
 public abstract class Renderer {
     // Create or Manage: window context

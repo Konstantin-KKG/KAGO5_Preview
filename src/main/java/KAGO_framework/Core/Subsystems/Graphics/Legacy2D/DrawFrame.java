@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Graphics.Legacy2D;
+package KAGO_framework.Core.Subsystems.Graphics.Legacy2D;
 
 import KAGO_framework.Config;
 

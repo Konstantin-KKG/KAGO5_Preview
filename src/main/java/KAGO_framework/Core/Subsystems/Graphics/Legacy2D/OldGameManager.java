@@ -1,7 +1,7 @@
-package KAGO_framework.Core.Graphics.Legacy2D;
+package KAGO_framework.Core.Subsystems.Graphics.Legacy2D;
 
 import KAGO_framework.Config;
-import KAGO_framework.Core.Sound.SoundController;
+import KAGO_framework.Core.Subsystems.Sound.SoundController;
 import MyProject.control.GameController;
 
 import javax.swing.*;

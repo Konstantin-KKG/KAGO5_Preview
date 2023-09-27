@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Sound;
+package KAGO_framework.Core.Subsystems.Sound;
 
 import KAGO_framework.Config;
 import KAGO_framework.Extensions.AdvancedDataTypes.Queue;

@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Graphics;
+package KAGO_framework.Core.Subsystems.Graphics;
 
 public enum RendererOptions {
     Legacy2D,
