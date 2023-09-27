@@ -5,12 +5,10 @@ import MyProject.Control.GameController;
 
 public class GameManager {
 
-    // Refs
     private GameController gameController;
+    private GameScene activeGameScene;
 
     GameManager(){
-        // createWindow();
-
         if (Config.INFO_MESSAGES) {
             System.out.println("  > GameManager: Create GameController and Start Game...");
             System.out.println("     > Execute startProgram method once.");
@@ -19,6 +17,14 @@ public class GameManager {
             System.out.println("** Logs from now on relate to the user written program in \"MyProject\" **");
         }
 
-        // startProgram();
+        // Init
+        GameScene scene = new GameScene();
+        LoadScene(scene);
+
+        gameController = new GameController(this, scene);
+    }
+
+    public void LoadScene(GameScene scene) {
+        activeGameScene = scene;
     }
 }

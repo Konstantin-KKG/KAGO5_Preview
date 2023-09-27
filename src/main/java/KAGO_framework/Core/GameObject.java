@@ -10,7 +10,7 @@ public class GameObject {
     GameObject(){
         active = true;
         transform = new Transform();
-        components = new ArrayList<Component>();
+        components = new ArrayList<>();
     }
 
     public void Start(){
