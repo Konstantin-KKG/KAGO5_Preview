@@ -1,8 +1,7 @@
 package KAGO_framework.Core.Subsystems.Graphics.Legacy2D;
 
 import KAGO_framework.Config;
-import KAGO_framework.Core.Subsystems.Sound.SoundController;
-import MyProject.control.GameController;
+import MyProject.Control.GameController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +15,6 @@ public class OldGameManager implements ActionListener {
     private DrawingPanel drawingPanel;
     private GameController gameController; // das Objekt, das das Programm steuern soll
     private Timer gameProcess;
-    private SoundController soundController;
 
     // Attribute
     private int dt;
@@ -35,13 +33,6 @@ public class OldGameManager implements ActionListener {
         if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird wiederholend die Methode updateProgram von dem ProgramController-Objekt aufgerufen.");
         if ( Config.INFO_MESSAGES ) System.out.println("-------------------------------------------------------------------------------------------------\n");
         if ( Config.INFO_MESSAGES ) System.out.println("** Ab hier folgt das Log zum laufenden Programm: **");
-
-        if (MyProject.Config.USE_SOUND){
-            soundController = new SoundController();
-        } else {
-            if ( Config.INFO_MESSAGES)
-                System.out.println("** Achtung! Sound deaktiviert => soundController ist NULL (kann in Config geändert werden). **");
-        }
 
         startProgram();
     }
@@ -76,11 +67,6 @@ public class OldGameManager implements ActionListener {
         gameProcess.start();
     }
 
-    public SoundController getSoundController(){
-        return soundController;
-    }
-
-
     /**
      * Wird vom Timer-Thread aufgerufen. Es wird dafuer gesorgt, dass das aktuelle Drawing-Panel
      * alle seine Objekte zeichnet und deren Update-Methoden aufruft.
@@ -99,9 +85,6 @@ public class OldGameManager implements ActionListener {
 
         // Führe Berechnungen und Aktualisierungen im Hauptobjekt aus
         gameController.updateProgram(dtSeconds);
-
-        // Aktualisiere SoundController, wenn vorhanden
-        if (soundController != null) soundController.update(dtSeconds);
     }
 
     /**

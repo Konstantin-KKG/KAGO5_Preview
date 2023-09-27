@@ -1,8 +1,8 @@
-package KAGO_framework.Extensions.Database.mysql;
+package KAGO_framework.Extensions.Database.SqlLite;
 
 /**
  * <p>
- * Materialien zu den zentralen NRW-Abiturpruefungen im Fach Informatik ab 2018.
+ * Materialien zu den zentralen NRW-Abiturpruefungen im Fach Informatik ab 2018
  * </p>
  * <p>
  * Klasse QueryResult
@@ -10,7 +10,7 @@ package KAGO_framework.Extensions.Database.mysql;
  * <p>
  * Ein Objekt der Klasse QueryResult stellt die Ergebnistabelle einer Datenbankanfrage mit Hilfe 
  * der Klasse DatabaseConnector dar. Objekte dieser Klasse werden nur von der Klasse DatabaseConnector erstellt. 
- * Die Klasse verfuegt ueber keinen oeffentlichen Konstruktor. (GEÄNDERT FÜR FRAMEWORK-KOMPATIBILITÄT)
+ * Die Klasse verfuegt ueber keinen oeffentlichen Konstruktor.
  * </p>
  * 
  * @author Qualitaets- und UnterstuetzungsAgentur - Landesinstitut fuer Schule
@@ -24,7 +24,7 @@ public class QueryResult{
   /**
    * Paketinterner Konstruktor.
    */
-  public QueryResult(String[][] pData, String[] pColumnNames, String[] pColumnTypes){
+  QueryResult(String[][] pData, String[] pColumnNames, String[] pColumnTypes){
     data = pData;
     columnNames = pColumnNames;   
     columnTypes = pColumnTypes;

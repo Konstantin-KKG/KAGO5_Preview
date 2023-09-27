@@ -1,7 +1,7 @@
 package KAGO_framework.Extensions.Networking;
 
 import KAGO_framework.Config;
-import MyProject.control.GameController;
+import MyProject.Control.GameController;
 
 import javax.swing.*;
 import java.io.IOException;

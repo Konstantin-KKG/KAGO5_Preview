@@ -1,7 +1,7 @@
 package KAGO_framework.Core;
 
 import KAGO_framework.Config;
-import MyProject.control.GameController;
+import MyProject.Control.GameController;
 
 public class GameManager {
 

@@ -1,4 +1,4 @@
-package MyProject.control;
+package MyProject.Control;
 
 import KAGO_framework.Core.GameManager;
 

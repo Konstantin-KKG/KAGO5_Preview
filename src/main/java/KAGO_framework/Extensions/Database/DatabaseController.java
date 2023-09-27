@@ -1,6 +1,6 @@
 package KAGO_framework.Extensions.Database;
 
-import KAGO_framework.Extensions.Database.mysql.QueryResult;
+import KAGO_framework.Extensions.Database.MySql.QueryResult;
 import KAGO_framework.Extensions.AdvancedDataTypes.Queue;
 
 import java.sql.*;
