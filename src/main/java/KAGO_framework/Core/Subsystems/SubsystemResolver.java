@@ -105,7 +105,6 @@ public class SubsystemResolver {
                 Type classType = subclass;
                 typeArrayList.add(classType);
             }
-
         } catch (ClassNotFoundException | NullPointerException e) {
             System.out.println("SubsystemResolver could not load a class by name (String).");
             e.printStackTrace();
