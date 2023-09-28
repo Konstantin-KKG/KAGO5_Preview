@@ -26,7 +26,7 @@ public class SubsystemResolver {
         Type[] componentHandlers = reflectOnComponentHandlers();
 
         // Currently debug code
-        System.out.println(componentTypes.length);
+        System.out.println("Found " + (componentTypes.length + componentHandlers.length) + " Type(s)");
 
         for (Type component : componentTypes)
             System.out.println(component.getTypeName());
@@ -59,7 +59,7 @@ public class SubsystemResolver {
      * @see ComponentHandler
      */
     private static Type[] reflectOnComponentHandlers() {
-        Type[] allComponentHandlers = findClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class);
+        Type[] allComponentHandlers = findClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
         return allComponentHandlers;
     }
 
