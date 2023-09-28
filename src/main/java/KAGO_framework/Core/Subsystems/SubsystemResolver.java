@@ -35,17 +35,17 @@ public class SubsystemResolver {
 
     private static Type[] reflectOnComponents() {
         String packageName = "KAGO_framework.Core.Components";
-        Type[] allComponents = FindClasses(packageName, Component.class);
+        Type[] allComponents = findClasses(packageName, Component.class);
         return allComponents;
     }
 
     private static Type[] reflectOnComponentHandlers() {
         String packageName = "KAGO_framework.Core.Subsystems";
-        Type[] allComponentHandlers  = FindClasses(packageName, ComponentHandler.class);
+        Type[] allComponentHandlers  = findClasses(packageName, ComponentHandler.class);
         return allComponentHandlers;
     }
 
-    private static Type[] FindClasses(String packageName, Type commonSuperClassType) {
+    private static Type[] findClasses(String packageName, Type commonSuperClassType) {
         ArrayList<Type> typeArrayList = new ArrayList<>();
 
         // Specify the package name where classes are located
@@ -100,7 +100,7 @@ public class SubsystemResolver {
         return types;
     }
 
-    public static File[] getFiles(URL packageUrl) {
+    private static File[] getFiles(URL packageUrl) {
         ArrayList<File> files = new ArrayList<>();
         String protocol = packageUrl.getProtocol();
 
@@ -112,7 +112,7 @@ public class SubsystemResolver {
         return files.toArray(new File[0]);
     }
 
-    private static void scanFiles(File directory, List<File> files) {
+    private static void scanFiles(File directory, ArrayList<File> files) {
         File[] dirFiles = directory.listFiles();
 
         if (dirFiles != null)
