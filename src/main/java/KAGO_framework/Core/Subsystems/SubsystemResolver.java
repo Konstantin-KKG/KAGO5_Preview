@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class SubsystemResolver {
 
         for (Type componentHandler : componentHandlers)
             System.out.println(componentHandler.getTypeName());
-
     }
 
     /**
@@ -67,9 +67,10 @@ public class SubsystemResolver {
      * Finds all classes in a package (and their child packages) which have a common parent class
      * @param packageName the package to search in
      * @param commonSuperClassType the common parent class type
+     * @param classNameSuffix a suffix to the class name
      * @return an array of all found class types
      */
-    private static Type[] findClasses(String packageName, Type commonSuperClassType) {
+    private static Type[] findClasses(String packageName, Type commonSuperClassType, String... classNameSuffix) {
         // Create a temporary ArrayList to fill
         ArrayList<Type> typeArrayList = new ArrayList<>();
 
@@ -84,30 +85,41 @@ public class SubsystemResolver {
             assert packageUrl != null : "FUCK! Package URL not found.";
 
             // Get the list of all files in the package directory
-            String decodedPackagePath = URLDecoder.decode(packageUrl.getFile(), StandardCharsets.UTF_8);
-            File[] allFiles = getFiles(packageUrl); // new File[] { new File(decodedPackagePath) };
+            File[] allFiles = getFiles(packageUrl);
 
-            // Create a list for all useful classes
+            // Create a list for all subclasses
             List<Class<?>> subclasses = new ArrayList<>();
 
             // Iterate through all packages and all files in those packages
             for (File file : allFiles) {
                 String fileName = file.getName();
-                //Check if the file is a class
+
+                // Check if the file is a class
                 if (!file.getName().endsWith(".class"))
+                    continue;
+
+                // Filter for class name suffix
+                String rawFileName = fileName.replace(".class", "");
+                if (classNameSuffix.length != 0)
+                    if (!rawFileName.endsWith(classNameSuffix[0]))
+                        continue;
+
+                // Exclude "ComponentHandler"
+                if(rawFileName.equals("ComponentHandler"))
                     continue;
 
                 // Extract class name from the file name
                 String className = packageName + "." + fileName.substring(0, fileName.length() - 6);
-
-                System.out.println(file.getName());
+                System.out.println(className);
 
                 // Load the possible child class
-                Class<?> clazz = Class.forName(className); // TODO: check comment below
                 /*
-                    So practically .forName() has to have access to everything related to the class in order to load it
-                    some of ur classes may or may not have dependencies outside our scope
+                    So basically .forName() has to have access to the class' parent class .class file
+                    in order to load its src code.
+                    Some of our classes may or may not have parent classes outside our ./out scope
+                    TODO: same problem but different :c
                 */
+                Class<?> clazz = Class.forName(className);
 
                 // Load the common parent class given by the parameter
                 Class<?> commonSuperClass = (Class<?>) commonSuperClassType;
