@@ -1,6 +1,7 @@
 package KAGO_framework.Core;
 
 import KAGO_framework.Config;
+import KAGO_framework.Core.Subsystems.SubsystemResolver;
 import MyProject.Control.GameController;
 
 public class GameManager {
@@ -17,7 +18,10 @@ public class GameManager {
             System.out.println("** Logs from now on relate to the user written program in \"MyProject\" **");
         }
 
-        // Init
+        // Init Systems
+        SubsystemResolver.Initialize();
+
+        // Init Game
         GameScene scene = new GameScene();
         LoadScene(scene);
 
