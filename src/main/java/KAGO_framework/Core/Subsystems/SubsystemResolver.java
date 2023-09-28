@@ -77,7 +77,12 @@ public class SubsystemResolver {
                 System.out.println(file.getName());
 
                 // Load the class, check if it is a subclass of Component and add it to the list
-                Class<?> clazz = Class.forName(className); // TODO: This line does tend to randomly fail, pls help >:c
+                Class<?> clazz = Class.forName(className); // TODO: This line does tend to randomly fail, pls help :
+                /*
+                    So practically .forName() has to have access to everything related to the class in order to load it
+                    some of ur classes may or may not have dependencies outside our scope
+                */
+
                 Class<?> commonSuperClass = (Class<?>) commonSuperClassType;
                 if (commonSuperClass.isAssignableFrom(clazz) && !clazz.equals(commonSuperClass))
                     subclasses.add(clazz);
