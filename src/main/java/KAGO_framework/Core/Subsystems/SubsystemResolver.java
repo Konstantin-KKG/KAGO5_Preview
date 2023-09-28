@@ -27,32 +27,48 @@ public class SubsystemResolver {
         // Currently debug code
         System.out.println(componentTypes.length);
 
-        for (Type component : componentTypes) {
+        for (Type component : componentTypes)
             System.out.println(component.getTypeName());
-        }
 
-        for (Type componentHandler : componentHandlers) {
+        for (Type componentHandler : componentHandlers)
             System.out.println(componentHandler.getTypeName());
-        }
+
     }
 
+    /**
+     * Forwards the component to its corresponding handler
+     * @param component what component should be forwarded
+     */
     public static void ResolveComponent(Component component) {
         // TODO: Replace null
         componentHandlerHashMap.get(null).ExecLogic(component);
     }
 
+    /**
+     * Returns all Component classes from the Components Package
+     * @return an array of all component types
+     */
     private static Type[] reflectOnComponents() {
-        String packageName = "KAGO_framework.Core.Components";
-        Type[] allComponents = findClasses(packageName, Component.class);
+        Type[] allComponents = findClasses(COMPONENTS_PACKAGE_URL, Component.class);
         return allComponents;
     }
 
+    /**
+     * Returns all ComponentHandlers from the Subsystems Package and child Packages
+     * @return an array of all ComponentHandlers
+     * @see ComponentHandler
+     */
     private static Type[] reflectOnComponentHandlers() {
-        String packageName = "KAGO_framework.Core.Subsystems";
-        Type[] allComponentHandlers  = findClasses(packageName, ComponentHandler.class);
+        Type[] allComponentHandlers = findClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class);
         return allComponentHandlers;
     }
 
+    /**
+     * Finds all classes in a package (and their child packages) which have a common parent class
+     * @param packageName the package to search in
+     * @param commonSuperClassType the common parent class type
+     * @return an array of all found class types
+     */
     private static Type[] findClasses(String packageName, Type commonSuperClassType) {
         // Create a temporary ArrayList to fill
         ArrayList<Type> typeArrayList = new ArrayList<>();
@@ -86,8 +102,8 @@ public class SubsystemResolver {
 
                 System.out.println(file.getName());
 
-                // Load the class, check if it is a subclass of Component and add it to the list
-                Class<?> clazz = Class.forName(className); // TODO: This line does tend to randomly fail, pls help :
+                // Load the possible child class
+                Class<?> clazz = Class.forName(className); // TODO: check comment below
                 /*
                     So practically .forName() has to have access to everything related to the class in order to load it
                     some of ur classes may or may not have dependencies outside our scope
@@ -134,6 +150,12 @@ public class SubsystemResolver {
         return files.toArray(new File[0]);
     }
 
+    /**
+     * Recursively scans files and adds them to the provided array list
+     * Should Only be Invoked by getFiles()
+     * @param directory The directory to scan
+     * @param files Where Files of directory should be added to
+     */
     private static void scanFiles(File directory, ArrayList<File> files) {
         File[] dirFiles = directory.listFiles();
 
