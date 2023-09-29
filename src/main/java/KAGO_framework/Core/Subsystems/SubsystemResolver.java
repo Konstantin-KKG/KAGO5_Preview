@@ -26,7 +26,7 @@ public class SubsystemResolver {
         Type[] componentHandlers = reflectOnComponentHandlers();
 
         // Currently debug code
-        System.out.println("Found " + (componentTypes.length + componentHandlers.length) + " Type(s)");
+        System.out.println("Loaded " + (componentTypes.length + componentHandlers.length) + " Type(s)");
 
         for (Type component : componentTypes)
             System.out.println(component.getTypeName());
@@ -109,7 +109,10 @@ public class SubsystemResolver {
                     continue;
 
                 // Extract class name from the file name
-                String className = packageName + "." + fileName.substring(0, fileName.length() - 6);
+                //Get File Path and turn it into class format
+                String filePath = file.getAbsolutePath().replace("\\",".").replace(".class","");
+                //Remove everything before packageName before filePath
+                String className = filePath.substring(filePath.indexOf(packageName));
                 System.out.println(className);
 
                 // Load the possible child class
