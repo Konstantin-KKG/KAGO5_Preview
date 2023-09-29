@@ -1,6 +1,7 @@
 package KAGO_framework.Core;
 
 import KAGO_framework.Config;
+import KAGO_framework.Core.Components.Test;
 import KAGO_framework.Core.Subsystems.SubsystemResolver;
 import MyProject.Control.GameController;
 

@@ -1,18 +1,20 @@
 package KAGO_framework.Core.Subsystems;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Used to manage all Subsystems
- * @author Kosta, Habib, Maxim (and Julius(Java-Doc-Help))
+ * @author Kosta, Habib, Maxim and Julius
  * @since 28.09.2023
  */
 public class SubsystemResolver {
@@ -25,14 +27,9 @@ public class SubsystemResolver {
         Type[] componentTypes = reflectOnComponents();
         Type[] componentHandlers = reflectOnComponentHandlers();
 
-        // Currently debug code
         System.out.println("Loaded " + (componentTypes.length + componentHandlers.length) + " Type(s)");
 
-        for (Type component : componentTypes)
-            System.out.println(component.getTypeName());
-
-        for (Type componentHandler : componentHandlers)
-            System.out.println(componentHandler.getTypeName());
+        PopulateComponentHandlerHashMap(componentTypes, componentHandlers);
     }
 
     /**
@@ -40,8 +37,49 @@ public class SubsystemResolver {
      * @param component what component should be forwarded
      */
     public static void ResolveComponent(Component component) {
-        // TODO: Replace null
-        componentHandlerHashMap.get(null).ExecLogic(component);
+        // TODO: Error Handling
+        ComponentHandler handler =  componentHandlerHashMap.get(component.getClass());
+        if(handler != null)
+            handler.ExecLogic(component);
+        else
+            System.err.println("There is no ComponentHandler for: " + component.getClass());
+    }
+
+    /**
+     * Creates for each ComponentType a corresponding ComponentHandler (if available in the componentHandlerTypes)
+     * Adds them as a key, value pair to the componentHandlerHashMap
+     * @param componentTypes all componentTypes
+     * @param componentHandlerTypes all componentHandlerTypes (corresponding to the componentTypes)
+     */
+    private static void PopulateComponentHandlerHashMap(Type[] componentTypes, Type[] componentHandlerTypes) {
+        for (Type componentType : componentTypes)
+            for (Type componentHandlerType : componentHandlerTypes) {
+                // Filter name of types
+                String[] componentTypeNameSubstrings = componentType.getTypeName().split("\\.");
+                String[] componentHandlerTypeNameSubstrings = componentHandlerType.getTypeName().split("\\.");
+
+                String componentTypeName = componentTypeNameSubstrings[componentTypeNameSubstrings.length - 1];
+                String componentHandlerTypeName = componentHandlerTypeNameSubstrings[componentHandlerTypeNameSubstrings.length - 1];
+
+                // Finds a component, componentHandler pair
+                // Example: Test = TestHandler (true)
+                if (componentTypeName.equals(componentHandlerTypeName.replace("Handler", ""))) {
+                    try {
+                        // Create componentHandler instance
+                        Class<?> componentHandlerClass = Class.forName(componentHandlerType.getTypeName());
+                        Constructor<?> componentHandlerConstructor = componentHandlerClass.getDeclaredConstructor();
+
+                        Object componentHandlerObject = componentHandlerConstructor.newInstance();
+                        ComponentHandler componentHandler = (ComponentHandler) componentHandlerObject;
+
+                        // Add pair to componentHandlerHashMap
+                        componentHandlerHashMap.put(componentType, componentHandler);
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+                        System.err.println("Couldn't create instance of a componentHandlerType: \n" + componentHandlerType.getTypeName());
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
     }
 
     /**
@@ -108,24 +146,16 @@ public class SubsystemResolver {
                 if(rawFileName.equals("ComponentHandler"))
                     continue;
 
-                // Extract class name from the file name
-                //Get File Path and turn it into class format
-                String filePath = file.getAbsolutePath().replace("\\",".").replace(".class","");
-                //Remove everything before packageName before filePath
+                // Extract filePath (url format) / className
+                String filePath = file.getPath().replace("\\",".").replace(".class","");
                 String className = filePath.substring(filePath.indexOf(packageName));
-                System.out.println(className);
 
-                // Load the possible child class
-                /*
-                    So basically .forName() has to have access to the class' parent class .class file
-                    in order to load its src code.
-                    Some of our classes may or may not have parent classes outside our ./out scope
-                    TODO: same problem but different :c
-                */
+                // Load current file class
                 Class<?> clazz = Class.forName(className);
 
                 // Load the common parent class given by the parameter
                 Class<?> commonSuperClass = (Class<?>) commonSuperClassType;
+
                 // Check if the possible child class is a subclass of the common parent class and add it to the list
                 if (commonSuperClass.isAssignableFrom(clazz) && !clazz.equals(commonSuperClass))
                     subclasses.add(clazz);
@@ -137,7 +167,7 @@ public class SubsystemResolver {
                 typeArrayList.add(classType);
             }
         } catch (ClassNotFoundException | NullPointerException e) {
-            System.out.println("SubsystemResolver could not load a class by name (String).");
+            System.err.println("SubsystemResolver could not load a class by name (String).");
             e.printStackTrace();
         }
 

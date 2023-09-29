@@ -7,6 +7,6 @@ public class TestHandler extends ComponentHandler {
 
     @Override
     public void ExecLogic(Component component) {
-
+        System.out.println("EXEC LOGIC WAS CALLED FOR A TEST COMPONENT");
     }
 }
