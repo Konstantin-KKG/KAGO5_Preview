@@ -6,7 +6,7 @@ package KAGO_framework;
 public class Config {
 
     // Frameworkversion
-    public final static String VERSION = "KAGO.5 - 26.09.2023";
+    public final static String VERSION = "KAGO.5 - 29.09.2023";
     public final static String JAVA_SUPPORTED = "Java 11 - Java 15";
 
     // Schaltet die Infomeldungen des Frameworks an oder aus
