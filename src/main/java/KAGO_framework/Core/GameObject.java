@@ -9,7 +9,7 @@ public class GameObject {
     public Transform transform;
     public ArrayList<Component> components;
 
-    GameObject(){
+    public GameObject(){
         active = true;
         transform = new Transform();
         components = new ArrayList<>();

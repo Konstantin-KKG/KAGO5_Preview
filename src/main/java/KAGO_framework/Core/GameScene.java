@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class GameScene {
     private ArrayList<GameObject> gameObjects;
 
-    GameScene() {
+    public GameScene() {
         gameObjects = new ArrayList<>();
     }
 

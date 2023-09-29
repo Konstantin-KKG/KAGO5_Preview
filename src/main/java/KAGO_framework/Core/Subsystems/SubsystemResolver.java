@@ -3,7 +3,6 @@ package KAGO_framework.Core.Subsystems;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Used to manage all Subsystems
+ * Is used to manage all Subsystems
  * @author Kosta, Habib, Maxim and Julius
  * @since 28.09.2023
  */
@@ -29,7 +28,7 @@ public class SubsystemResolver {
 
         System.out.println("Loaded " + (componentTypes.length + componentHandlers.length) + " Type(s)");
 
-        PopulateComponentHandlerHashMap(componentTypes, componentHandlers);
+        populateComponentHandlerHashMap(componentTypes, componentHandlers);
     }
 
     /**
@@ -51,7 +50,7 @@ public class SubsystemResolver {
      * @param componentTypes all componentTypes
      * @param componentHandlerTypes all componentHandlerTypes (corresponding to the componentTypes)
      */
-    private static void PopulateComponentHandlerHashMap(Type[] componentTypes, Type[] componentHandlerTypes) {
+    private static void populateComponentHandlerHashMap(Type[] componentTypes, Type[] componentHandlerTypes) {
         for (Type componentType : componentTypes)
             for (Type componentHandlerType : componentHandlerTypes) {
                 // Filter name of types
@@ -87,8 +86,7 @@ public class SubsystemResolver {
      * @return an array of all component types
      */
     private static Type[] reflectOnComponents() {
-        Type[] allComponents = findClasses(COMPONENTS_PACKAGE_URL, Component.class);
-        return allComponents;
+        return findClasses(COMPONENTS_PACKAGE_URL, Component.class);
     }
 
     /**
@@ -97,8 +95,7 @@ public class SubsystemResolver {
      * @see ComponentHandler
      */
     private static Type[] reflectOnComponentHandlers() {
-        Type[] allComponentHandlers = findClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
-        return allComponentHandlers;
+        return findClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
     }
 
     /**
@@ -146,7 +143,7 @@ public class SubsystemResolver {
                 if(rawFileName.equals("ComponentHandler"))
                     continue;
 
-                // Extract filePath (url format) / className
+                // Extract filePath (URL format) / className
                 String filePath = file.getPath().replace("\\",".").replace(".class","");
                 String className = filePath.substring(filePath.indexOf(packageName));
 
@@ -161,11 +158,8 @@ public class SubsystemResolver {
                     subclasses.add(clazz);
             }
 
-            // Convert from classes to types
-            for (Class<?> subclass : subclasses) {
-                Type classType = subclass;
-                typeArrayList.add(classType);
-            }
+            typeArrayList.addAll(subclasses);
+
         } catch (ClassNotFoundException | NullPointerException e) {
             System.err.println("SubsystemResolver could not load a class by name (String).");
             e.printStackTrace();
@@ -176,7 +170,7 @@ public class SubsystemResolver {
         typeArrayList.toArray(types);
         return types;
     }
-    
+
     /**
      * Returns all nested Files in a package
      * Acts as an entry point for scanFiles()
@@ -185,12 +179,11 @@ public class SubsystemResolver {
      */
     private static File[] getFiles(URL packageUrl) {
         ArrayList<File> files = new ArrayList<>();
-        String protocol = packageUrl.getProtocol();
 
-        if (protocol.equals("file")) {
-            File file = new File(URLDecoder.decode(packageUrl.getFile(), StandardCharsets.UTF_8));
-            scanFiles(file, files);
-        }
+        assert packageUrl.getProtocol().equals("file") : "The given URL does not contain a file";
+
+        File file = new File(URLDecoder.decode(packageUrl.getFile(), StandardCharsets.UTF_8));
+        scanFiles(file, files);
 
         return files.toArray(new File[0]);
     }
@@ -206,13 +199,11 @@ public class SubsystemResolver {
 
         //Check if the directory is empty
         if (dirFiles != null) {
-            //Go Through all Files in directory
             for (File file : dirFiles) {
-                //If File has sub-folders scan all of them
+                //If File is a folders scan all files inside them
                 if (file.isDirectory()) {
                     scanFiles(file, files);
                 } else {
-                    //Add Files to given Arraylist if it's not a folder
                     files.add(file);
                 }
             }

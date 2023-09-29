@@ -10,7 +10,7 @@ public class GameManager {
     private GameController gameController;
     private GameScene activeGameScene;
 
-    GameManager(){
+    public GameManager(){
         if (Config.INFO_MESSAGES) {
             System.out.println("  > GameManager: Create GameController and Start Game...");
             System.out.println("     > Execute startProgram method once.");
