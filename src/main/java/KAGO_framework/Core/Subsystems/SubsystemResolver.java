@@ -28,7 +28,6 @@ public class SubsystemResolver {
         Type[] componentHandlers = reflectOnComponentHandlers();
 
         System.out.println("Loaded " + (componentTypes.length + componentHandlers.length) + " Type(s)");
-
         PopulateComponentHandlerHashMap(componentTypes, componentHandlers);
     }
 
@@ -38,7 +37,7 @@ public class SubsystemResolver {
      */
     public static void ResolveComponent(Component component) {
         // TODO: Error Handling
-        ComponentHandler handler =  componentHandlerHashMap.get(component.getClass());
+        ComponentHandler handler = componentHandlerHashMap.get(component.getClass());
         if(handler != null)
             handler.ExecLogic(component);
         else
