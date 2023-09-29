@@ -1,6 +1,8 @@
 package KAGO_framework.Core;
 
 import KAGO_framework.Config;
+
+import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
 import java.awt.*;
 
 public class Launcher {
@@ -11,22 +13,16 @@ public class Launcher {
             System.out.println("** Initializing Framework: **");
         }
 
-        EventQueue.invokeLater(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        if ( Config.INFO_MESSAGES)
-                            System.out.println("  > KAGO-Main-Method: Program Start. Creating KAGO Launcher Instance.");
-                        new Launcher();
-                    }
-                });
+        Launcher newLauncher = new Launcher();
     }
 
-    public Launcher(){
+    Launcher(){
         if ( Config.INFO_MESSAGES)
             System.out.println("  > KAGO-Launcher: Successfully created. Setting up Game Systems...");
 
-        new GameManager();
-    }
+        GameManager gameManager = new GameManager();
+        Thread mainThread = new Thread(gameManager);
 
+        mainThread.start();
+    }
 }

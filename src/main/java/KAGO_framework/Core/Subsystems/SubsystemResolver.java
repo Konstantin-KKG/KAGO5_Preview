@@ -3,6 +3,7 @@ package KAGO_framework.Core.Subsystems;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Is used to manage all Subsystems
+ * Used to manage all Subsystems
  * @author Kosta, Habib, Maxim and Julius
  * @since 28.09.2023
  */
@@ -27,7 +28,6 @@ public class SubsystemResolver {
         Type[] componentHandlers = reflectOnComponentHandlers();
 
         System.out.println("Loaded " + (componentTypes.length + componentHandlers.length) + " Type(s)");
-
         populateComponentHandlerHashMap(componentTypes, componentHandlers);
     }
 
@@ -37,7 +37,7 @@ public class SubsystemResolver {
      */
     public static void ResolveComponent(Component component) {
         // TODO: Error Handling
-        ComponentHandler handler =  componentHandlerHashMap.get(component.getClass());
+        ComponentHandler handler = componentHandlerHashMap.get(component.getClass());
         if(handler != null)
             handler.ExecLogic(component);
         else
