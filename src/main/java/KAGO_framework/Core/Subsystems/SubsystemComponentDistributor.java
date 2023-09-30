@@ -1,5 +1,8 @@
 package KAGO_framework.Core.Subsystems;
 
+import KAGO_framework.Core.Debug.Debug;
+import KAGO_framework.Core.Debug.LogType;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +19,7 @@ import java.util.List;
  * @author Kosta, Habib, Maxim and Julius
  * @since 28.09.2023
  */
-public class SubsystemResolver {
+public class SubsystemComponentDistributor {
     private static final String COMPONENTS_PACKAGE_URL = "KAGO_framework.Core.Components";
     private static final String COMPONENT_HANDLERS_PACKAGE_URL = "KAGO_framework.Core.Subsystems";
 
@@ -25,23 +28,23 @@ public class SubsystemResolver {
     public static void Initialize() {
         Type[] componentTypes = reflectOnComponents();
         Type[] componentHandlers = reflectOnComponentHandlers();
-
-        System.out.println("Loaded " + (componentTypes.length + componentHandlers.length) + " Type(s)");
+        Debug.Log(String.format("Loaded: %d componentType(s), %d componentHandler(s).", componentTypes.length, componentHandlers.length), LogType.SUCCESS);
 
         populateComponentHandlerHashMap(componentTypes, componentHandlers);
+        Debug.Log(String.format("Cached: %d (componentType, componentHandler) pairs.", componentHandlerHashMap.size()), LogType.SUCCESS);
     }
 
     /**
      * Forwards the component to its corresponding handler
      * @param component what component should be forwarded
      */
-    public static void ResolveComponent(Component component) {
-        // TODO: Error Handling
+    public static void Distribute(Component component) {
         ComponentHandler handler = componentHandlerHashMap.get(component.getClass());
+
         if(handler != null)
             handler.ExecLogic(component);
         else
-            System.err.println("There is no ComponentHandler for: " + component.getClass());
+            Debug.Log(String.format("No componentHandler found for component: %s", component.getClass()), LogType.WARNING);
     }
 
     /**
@@ -60,24 +63,27 @@ public class SubsystemResolver {
                 String componentTypeName = componentTypeNameSubstrings[componentTypeNameSubstrings.length - 1];
                 String componentHandlerTypeName = componentHandlerTypeNameSubstrings[componentHandlerTypeNameSubstrings.length - 1];
 
-                // Finds a component, componentHandler pair
-                // Example: Test = TestHandler (true)
-                if (componentTypeName.equals(componentHandlerTypeName.replace("Handler", ""))) {
-                    try {
-                        // Create componentHandler instance
-                        Class<?> componentHandlerClass = Class.forName(componentHandlerType.getTypeName());
-                        Constructor<?> componentHandlerConstructor = componentHandlerClass.getDeclaredConstructor();
+                // If the componentType does not match this componentHandlerType's name, continue to the next componentHandlerType
+                if (!componentTypeName.equals(componentHandlerTypeName.replace("Handler", "")))
+                    continue;
 
-                        Object componentHandlerObject = componentHandlerConstructor.newInstance();
-                        ComponentHandler componentHandler = (ComponentHandler) componentHandlerObject;
+                ComponentHandler componentHandlerInstance;
 
-                        // Add pair to componentHandlerHashMap
-                        componentHandlerHashMap.put(componentType, componentHandler);
-                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
-                        System.err.println("Couldn't create instance of a componentHandlerType: \n" + componentHandlerType.getTypeName());
-                        throw new RuntimeException(e);
-                    }
+                // Create componentHandler instance
+                try {
+                    Class<?> componentHandlerClass = Class.forName(componentHandlerType.getTypeName());
+                    Constructor<?> componentHandlerConstructor = componentHandlerClass.getDeclaredConstructor();
+
+                    Object componentHandlerObject = componentHandlerConstructor.newInstance();
+                    componentHandlerInstance = (ComponentHandler) componentHandlerObject;
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+                    Debug.Log(String.format("Couldn't create an instance of the componentHandlerType: %s", componentHandlerType.getTypeName()), LogType.ERROR);
+                    e.printStackTrace();
+                    continue;
                 }
+
+                // Add pair to componentHandlerHashMap
+                componentHandlerHashMap.put(componentType, componentHandlerInstance);
             }
     }
 
@@ -106,68 +112,68 @@ public class SubsystemResolver {
      * @return an array of all found class types
      */
     private static Type[] findClasses(String packageName, Type commonSuperClassType, String... classNameSuffix) {
-        // Create a temporary ArrayList to fill
-        ArrayList<Type> typeArrayList = new ArrayList<>();
-
         // Specify the package name where classes are located
         String packagePath = packageName.replace('.', '/');
 
         // Get the class loader for the current thread
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        try {
-            // Create and check the URL of the package location
-            URL packageUrl = classLoader.getResource(packagePath);
-            assert packageUrl != null : "FUCK! Package URL not found.";
 
-            // Get the list of all files in the package directory
-            File[] allFiles = getFiles(packageUrl);
+        // Create and check the URL of the package location
+        URL packageUrl = classLoader.getResource(packagePath);
+        if (packageUrl == null) {
+            Debug.Log(String.format("Couldn't find package by URL: %s", packagePath), LogType.FATAL);
+            throw new RuntimeException();
+        }
 
-            // Create a list for all subclasses
-            List<Class<?>> subclasses = new ArrayList<>();
+        // Get the list of all files in the package directory
+        File[] allFiles = getFiles(packageUrl);
 
-            // Iterate through all packages and all files in those packages
-            for (File file : allFiles) {
-                String fileName = file.getName();
+        // Create a list for all subclasses
+        List<Class<?>> subclasses = new ArrayList<>();
 
-                // Check if the file is a class
-                if (!file.getName().endsWith(".class"))
+        // Iterate through all packages and all files in those packages
+        for (File file : allFiles) {
+            String fileName = file.getName();
+
+            // Check if the file is a class
+            if (!file.getName().endsWith(".class"))
+                continue;
+
+            // Filter for class name suffix
+            String rawFileName = fileName.replace(".class", "");
+            if (classNameSuffix.length != 0)
+                if (!rawFileName.endsWith(classNameSuffix[0]))
                     continue;
 
-                // Filter for class name suffix
-                String rawFileName = fileName.replace(".class", "");
-                if (classNameSuffix.length != 0)
-                    if (!rawFileName.endsWith(classNameSuffix[0]))
-                        continue;
+            // Exclude "ComponentHandler"
+            if(rawFileName.equals("ComponentHandler"))
+                continue;
 
-                // Exclude "ComponentHandler"
-                if(rawFileName.equals("ComponentHandler"))
-                    continue;
+            // Extract filePath (URL format) / className
+            String filePath = file.getPath().replace("\\",".").replace(".class","");
+            String className = filePath.substring(filePath.indexOf(packageName));
 
-                // Extract filePath (URL format) / className
-                String filePath = file.getPath().replace("\\",".").replace(".class","");
-                String className = filePath.substring(filePath.indexOf(packageName));
-
-                // Load current file class
-                Class<?> clazz = Class.forName(className);
-
-                // Load the common parent class given by the parameter
-                Class<?> commonSuperClass = (Class<?>) commonSuperClassType;
-
-                // Check if the possible child class is a subclass of the common parent class and add it to the list
-                if (commonSuperClass.isAssignableFrom(clazz) && !clazz.equals(commonSuperClass))
-                    subclasses.add(clazz);
+            // Load current file class
+            Class<?> clazz;
+            try {
+                clazz = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                Debug.Log(String.format("Couldn't load class by name: %s.", className), LogType.ERROR);
+                e.printStackTrace();
+                continue;
             }
 
-            typeArrayList.addAll(subclasses);
+            // Load the common parent class given by the parameter
+            Class<?> commonSuperClass = (Class<?>) commonSuperClassType;
 
-        } catch (ClassNotFoundException | NullPointerException e) {
-            System.err.println("SubsystemResolver could not load a class by name (String).");
-            e.printStackTrace();
+            // Check if the possible child class is a subclass of the common parent class and add it to the list
+            if (commonSuperClass.isAssignableFrom(clazz) && !clazz.equals(commonSuperClass))
+                subclasses.add(clazz);
         }
 
         // Convert arraylist to type array
-        Type[] types = new Type[typeArrayList.size()];
-        typeArrayList.toArray(types);
+        Type[] types = new Type[subclasses.size()];
+        subclasses.toArray(types);
         return types;
     }
 
@@ -180,7 +186,10 @@ public class SubsystemResolver {
     private static File[] getFiles(URL packageUrl) {
         ArrayList<File> files = new ArrayList<>();
 
-        assert packageUrl.getProtocol().equals("file") : "The given URL does not contain a file";
+        if (!packageUrl.getProtocol().equals("file")) {
+            Debug.Log(String.format("The given URL: (%s) does not contain a file.", packageUrl), LogType.FATAL);
+            throw new RuntimeException();
+        }
 
         File file = new File(URLDecoder.decode(packageUrl.getFile(), StandardCharsets.UTF_8));
         scanFiles(file, files);
@@ -197,17 +206,15 @@ public class SubsystemResolver {
     private static void scanFiles(File directory, ArrayList<File> files) {
         File[] dirFiles = directory.listFiles();
 
-        //Check if the directory is empty
-        if (dirFiles != null) {
+        // Check if the directory is empty
+        if (dirFiles != null)
             for (File file : dirFiles) {
-                //If File is a folders scan all files inside them
-                if (file.isDirectory()) {
+                // If File is a folders scan all files inside them
+                if (file.isDirectory())
                     scanFiles(file, files);
-                } else {
+                else
                     files.add(file);
-                }
             }
-        }
     }
 }
 

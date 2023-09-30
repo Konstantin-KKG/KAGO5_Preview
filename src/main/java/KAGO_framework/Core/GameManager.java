@@ -1,11 +1,12 @@
 package KAGO_framework.Core;
 
-import KAGO_framework.Config;
-import KAGO_framework.Core.Subsystems.SubsystemResolver;
+import KAGO_framework.Core.Components.Test;
+import KAGO_framework.Core.Debug.Debug;
+import KAGO_framework.Core.Debug.LogType;
+import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 import MyProject.Control.GameController;
 
 public class GameManager implements Runnable {
-
     // Main loop settings
     boolean running = true;
 
@@ -21,14 +22,6 @@ public class GameManager implements Runnable {
     private GameScene activeGameScene;
    
     public void run() {
-        if (Config.INFO_MESSAGES) {
-            System.out.println("  > GameManager: Create GameController and Start Game...");
-            System.out.println("     > Execute startProgram method once.");
-            System.out.println("     > Execute updateProgram method from now on repeatedly.");
-            System.out.println("-------------------------------------------------------------------------------------------------\n");
-            System.out.println("** Logs from now on relate to the user written program in \"MyProject\" **");
-        }
-
         initSystems();
         initGame();
 
@@ -62,14 +55,16 @@ public class GameManager implements Runnable {
     }
 
     private void initSystems() {
-        SubsystemResolver.Initialize();
+        SubsystemComponentDistributor.Initialize();
     }
 
     private void initGame() {
         GameScene scene = new GameScene();
         LoadScene(scene);
+        Debug.Log("Created/Set default GameScene.", LogType.LOG);
 
         gameController = new GameController(this, scene);
+        Debug.Log("Created GameController.", LogType.LOG);
     }
 
     public void LoadScene(GameScene scene) {

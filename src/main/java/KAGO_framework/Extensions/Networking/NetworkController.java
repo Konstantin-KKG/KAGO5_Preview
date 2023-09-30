@@ -33,13 +33,13 @@ public abstract class NetworkController{
         @Override
         public void processMessage(String pMessage) {
             networkController.processServerRequest(pMessage);
-            if(Config.DEBUG)System.out.println("Received: "+pMessage);
+            // if(Config.DEBUG)System.out.println("Received: "+pMessage);
         }
 
         @Override
         public void send(String pMessage){
             super.send(pMessage);
-            if(Config.DEBUG)System.out.println("Sending: "+pMessage);
+            // if(Config.DEBUG)System.out.println("Sending: "+pMessage);
         }
     }
 

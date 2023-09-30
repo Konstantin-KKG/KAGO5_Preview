@@ -1,25 +1,19 @@
 package KAGO_framework.Core;
 
 import KAGO_framework.Config;
-
-import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
-import java.awt.*;
+import KAGO_framework.Core.Debug.Debug;
+import KAGO_framework.Core.Debug.LogType;
 
 public class Launcher {
     public static void startFramework(){
-        if (Config.INFO_MESSAGES) {
-            System.out.println("***** PROGRAM START (Framework: " + Config.VERSION + ") *****.");
-            System.out.println("** Supported Java-Versions: " + Config.JAVA_SUPPORTED);
-            System.out.println("** Initializing Framework: **");
-        }
+        Debug.Log(String.format("KAGO Framework Version: %s", Config.VERSION), LogType.INFO);
+        Debug.Log(String.format("Supported Java-Versions: %s", Config.JAVA_SUPPORTED), LogType.INFO);
+        Debug.Log("Initializing KAGO...", LogType.INFO);
 
-        Launcher newLauncher = new Launcher();
+        new Launcher();
     }
 
     Launcher(){
-        if ( Config.INFO_MESSAGES)
-            System.out.println("  > KAGO-Launcher: Successfully created. Setting up Game Systems...");
-
         GameManager gameManager = new GameManager();
         Thread mainThread = new Thread(gameManager);
 
