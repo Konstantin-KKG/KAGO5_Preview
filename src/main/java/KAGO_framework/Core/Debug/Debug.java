@@ -13,6 +13,12 @@ public class Debug {
     private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     private static final String ANSI_BLACK = "\u001B[30m";
 
+    /**
+     * Logs a message with a "LogLevel" setting
+     * @param message message to be logged
+     * @param logType "LogLevel"
+     * @see LogType "LogLevel" types
+     */
     public static void Log(String message, LogType logType){
         StringBuilder messageBuilder = new StringBuilder(message);
 

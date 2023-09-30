@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-import static KAGO_framework.Core.Util.ClassFinder.findClasses;
+import static KAGO_framework.Utilities.ClassFinder.FindClasses;
 
 /**
  * Is used to manage all Subsystems
@@ -84,11 +84,11 @@ public class SubsystemComponentDistributor {
     }
 
     private static Type[] reflectOnComponents() {
-        return findClasses(COMPONENTS_PACKAGE_URL, Component.class);
+        return FindClasses(COMPONENTS_PACKAGE_URL, Component.class);
     }
 
     private static Type[] reflectOnComponentHandlers() {
-        return findClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
+        return FindClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
     }
 }
 
