@@ -19,7 +19,7 @@ public class GameManager implements Runnable {
     //
     private GameController gameController;
     private GameScene activeGameScene;
-
+   
     public void run() {
         if (Config.INFO_MESSAGES) {
             System.out.println("  > GameManager: Create GameController and Start Game...");
