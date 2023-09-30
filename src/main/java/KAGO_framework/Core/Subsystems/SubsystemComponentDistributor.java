@@ -84,11 +84,11 @@ public class SubsystemComponentDistributor {
     }
 
     private static Type[] reflectOnComponents() {
-        return FindClasses(COMPONENTS_PACKAGE_URL, Component.class);
+        return Classes.FindClasses(COMPONENTS_PACKAGE_URL, Component.class);
     }
 
     private static Type[] reflectOnComponentHandlers() {
-        return FindClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
+        return Classes.FindClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
     }
 }
 
