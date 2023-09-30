@@ -14,6 +14,6 @@ public class Config {
     public final static int WINDOW_HEIGHT = 720 + 29; // Effektive Höhe ist etwa 29 Pixel geringer (Titelleiste wird mitgezählt)
 
     // Other Settings
-    public final static RendererOptions RENDERER_OPTION = RendererOptions.Legacy2D;
+    public final static RendererOptions RENDERER_OPTION = RendererOptions.LEGACY_2D;
     public final static boolean USE_SOUND = true;
 }

@@ -29,7 +29,7 @@ public class DrawFrame extends JFrame {
         setTitle(name);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        if ( Config.INFO_MESSAGES) System.out.println("  > DrawFrame: Fenster ist initialisiert.");
+        // if ( Config.INFO_MESSAGES) System.out.println("  > DrawFrame: Fenster ist initialisiert.");
     }
 
     /**

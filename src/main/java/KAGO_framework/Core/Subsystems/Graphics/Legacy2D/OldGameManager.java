@@ -28,11 +28,11 @@ public class OldGameManager implements ActionListener {
 
         // Setzt die Ziel-Zeit zwischen zwei aufeinander folgenden Frames in Millisekunden
         dt = 35; // Vernuenftiger Startwert
-        if ( Config.INFO_MESSAGES ) System.out.println("  > ViewController: Erzeuge ProgramController und starte Spielprozess (Min. dt = "+dt+"ms)...");
-        if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird nun einmalig die Methode startProgram von dem ProgramController-Objekt aufgerufen.");
-        if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird wiederholend die Methode updateProgram von dem ProgramController-Objekt aufgerufen.");
-        if ( Config.INFO_MESSAGES ) System.out.println("-------------------------------------------------------------------------------------------------\n");
-        if ( Config.INFO_MESSAGES ) System.out.println("** Ab hier folgt das Log zum laufenden Programm: **");
+        // if ( Config.INFO_MESSAGES ) System.out.println("  > ViewController: Erzeuge ProgramController und starte Spielprozess (Min. dt = "+dt+"ms)...");
+        // if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird nun einmalig die Methode startProgram von dem ProgramController-Objekt aufgerufen.");
+        // if ( Config.INFO_MESSAGES ) System.out.println("     > Es wird wiederholend die Methode updateProgram von dem ProgramController-Objekt aufgerufen.");
+        // if ( Config.INFO_MESSAGES ) System.out.println("-------------------------------------------------------------------------------------------------\n");
+        // if ( Config.INFO_MESSAGES ) System.out.println("** Ab hier folgt das Log zum laufenden Programm: **");
 
         startProgram();
     }
@@ -55,7 +55,7 @@ public class OldGameManager implements ActionListener {
         drawFrame.setResizable(false);
 
         // Übergibt den weiteren Programmfluss an das neue Objekt der Klasse ViewController
-        if (Config.INFO_MESSAGES) System.out.println("  > ViewController: Fenster eingerichtet. Startszene (Index: 0) angelegt.");
+        // if (Config.INFO_MESSAGES) System.out.println("  > ViewController: Fenster eingerichtet. Startszene (Index: 0) angelegt.");
     }
 
     private void startProgram(){
