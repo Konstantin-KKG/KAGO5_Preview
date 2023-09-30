@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassFinder {
+public class Classes {
 
     /**
      * Finds all classes in a package (and their child packages) which share a common parent class using reflection
@@ -124,5 +124,16 @@ public class ClassFinder {
                 else
                     files.add(file);
             }
+    }
+
+    public static String GetPackageNameOfClass(Class<?> clazz) {
+        Package pkg = clazz.getPackage();
+
+        if (pkg == null) {
+            Debug.Log("Couldn't find package of class", LogType.WARNING);
+            return "[MISSING_PACKAGE_NAME]";
+        }
+
+        return pkg.getName();
     }
 }

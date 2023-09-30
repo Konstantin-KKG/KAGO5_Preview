@@ -13,8 +13,14 @@ import KAGO_framework.Utilities.Classes;
  *  @author Kosta, Habib
  */
 public class SubsystemInitializer {
-    public static void Initialize() {
+    private static final String ENTRYPOINTS_PACKAGE_URL = "KAGO_framework.Core.Subsystems";
 
+    public static void Initialize() {
+        Type[] entrypointClasses =  reflectOnEntrypoints();
+        SubsystemEntrypoint[] entrypointObjects = createEntrypoints(entrypointClasses);
+        setupSubsystems(entrypointObjects);
+
+        Debug.Log("Finished initializing all Subsystems.", LogType.SUCCESS);
     }
 
     private static Type[] reflectOnEntrypoints() {
