@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Util;
+package KAGO_framework.Utilities;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
@@ -14,13 +14,13 @@ import java.util.List;
 public class ClassFinder {
 
     /**
-     * Finds all classes in a package (and their child packages) which have a common parent class
+     * Finds all classes in a package (and their child packages) which share a common parent class using reflection
      * @param packageName the package to search in
      * @param commonSuperClassType the common parent class type
      * @param classNameSuffix a suffix to the class name
      * @return an array of all found class types
      */
-    public static Type[] findClasses(String packageName, Type commonSuperClassType, String... classNameSuffix) {
+    public static Type[] FindClasses(String packageName, Type commonSuperClassType, String... classNameSuffix) {
         // Specify the package name where classes are located
         String packagePath = packageName.replace('.', '/');
 

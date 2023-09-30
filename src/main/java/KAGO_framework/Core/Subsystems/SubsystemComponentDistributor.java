@@ -19,7 +19,7 @@ public class SubsystemComponentDistributor {
     private static final String COMPONENTS_PACKAGE_URL = "KAGO_framework.Core.Components";
     private static final String COMPONENT_HANDLERS_PACKAGE_URL = "KAGO_framework.Core.Subsystems";
 
-    private static HashMap<Type, ComponentHandler> componentHandlerHashMap = new HashMap<>();
+    private static HashMap<Type, ComponentHandler> COMPONENT_HANDLER_HASH_MAP = new HashMap<>();
 
     public static void Initialize() {
         Type[] componentTypes = reflectOnComponents();
@@ -27,7 +27,7 @@ public class SubsystemComponentDistributor {
         Debug.Log(String.format("Loaded: %d componentType(s) and %d componentHandler(s).", componentTypes.length, componentHandlers.length), LogType.SUCCESS);
 
         populateComponentHandlerHashMap(componentTypes, componentHandlers);
-        Debug.Log(String.format("Cached: %d (componentType, componentHandler) pairs.", componentHandlerHashMap.size()), LogType.SUCCESS);
+        Debug.Log(String.format("Cached: %d (componentType, componentHandler) pairs.", COMPONENT_HANDLER_HASH_MAP.size()), LogType.SUCCESS);
     }
 
     /**
@@ -35,7 +35,7 @@ public class SubsystemComponentDistributor {
      * @param component what component should be forwarded
      */
     public static void Distribute(Component component) {
-        ComponentHandler handler = componentHandlerHashMap.get(component.getClass());
+        ComponentHandler handler = COMPONENT_HANDLER_HASH_MAP.get(component.getClass());
 
         if(handler != null)
             handler.ExecLogic(component);
@@ -79,23 +79,14 @@ public class SubsystemComponentDistributor {
                 }
 
                 // Add pair to componentHandlerHashMap
-                componentHandlerHashMap.put(componentType, componentHandlerInstance);
+                COMPONENT_HANDLER_HASH_MAP.put(componentType, componentHandlerInstance);
             }
     }
 
-    /**
-     * Returns all Component classes from the Components Package
-     * @return an array of all component types
-     */
     private static Type[] reflectOnComponents() {
         return findClasses(COMPONENTS_PACKAGE_URL, Component.class);
     }
 
-    /**
-     * Returns all ComponentHandlers from the Subsystems Package and child Packages
-     * @return an array of all ComponentHandlers
-     * @see ComponentHandler
-     */
     private static Type[] reflectOnComponentHandlers() {
         return findClasses(COMPONENT_HANDLERS_PACKAGE_URL, ComponentHandler.class, "Handler");
     }

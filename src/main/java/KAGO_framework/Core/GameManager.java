@@ -4,6 +4,7 @@ import KAGO_framework.Core.Components.Test;
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
+import KAGO_framework.Core.Subsystems.SubsystemInitializer;
 import MyProject.Control.GameController;
 
 public class GameManager implements Runnable {
@@ -55,6 +56,7 @@ public class GameManager implements Runnable {
     }
 
     private void initSystems() {
+        SubsystemInitializer.Initialize();
         SubsystemComponentDistributor.Initialize();
     }
 

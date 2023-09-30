@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Subsystems.Graphics.Legacy2D;
+package KAGO_framework.Core.Subsystems.Graphics.Legacy2D.LegacyShit;
 
 import javax.swing.*;
 import java.awt.*;

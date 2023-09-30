@@ -5,7 +5,7 @@ import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
 
 public class Launcher {
-    public static void startFramework(){
+    public static void StartFramework() {
         Debug.Log(String.format("KAGO Framework Version: %s", Config.VERSION), LogType.INFO);
         Debug.Log(String.format("Supported Java-Versions: %s", Config.JAVA_SUPPORTED), LogType.INFO);
         Debug.Log("Initializing KAGO...", LogType.INFO);
@@ -13,7 +13,7 @@ public class Launcher {
         new Launcher();
     }
 
-    Launcher(){
+    Launcher() {
         GameManager gameManager = new GameManager();
         Thread mainThread = new Thread(gameManager);
 

@@ -1,6 +1,5 @@
-package KAGO_framework.Core.Subsystems.Graphics.Legacy2D;
+package KAGO_framework.Core.Subsystems.Graphics.Legacy2D.LegacyShit;
 
-import KAGO_framework.Config;
 import MyProject.Control.GameController;
 
 import javax.swing.*;
