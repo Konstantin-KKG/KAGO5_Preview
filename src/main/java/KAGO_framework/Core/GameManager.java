@@ -2,6 +2,7 @@ package KAGO_framework.Core;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
+import KAGO_framework.Core.Subsystems.Component;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 import KAGO_framework.Core.Subsystems.SubsystemInitializer;
