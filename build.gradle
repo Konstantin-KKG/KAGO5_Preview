@@ -33,6 +33,7 @@ javafx {
 
 dependencies {
     implementation fileTree(dir: 'libs/lwjgl-3.3.3/libs', include: ['*.jar'])
+    implementation("io.github.kotlin-graphics:glm:0.9.9.1-11")
 }
 
 test {

@@ -1,9 +1,9 @@
 package KAGO_framework.Core;
 
-import KAGO_framework.Core.Math.Vector3D;
+import glm_.vec3.Vec3;
 
 public class Transform {
-    public Vector3D position;
-    public Vector3D rotation;
-    public Vector3D scale;
+    public Vec3 position;
+    public Vec3 rotation;
+    public Vec3 scale;
 }
