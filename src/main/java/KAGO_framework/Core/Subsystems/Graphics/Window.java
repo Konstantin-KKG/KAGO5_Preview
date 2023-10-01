@@ -9,34 +9,16 @@ import java.nio.IntBuffer;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
-    public static Window currentWindow;
-    private long window;
+    private static long windowHandle;
 
-    public static void CreateWindow() {
-        if (currentWindow != null) {
+    public static void Construct() {
+        if (windowHandle != 0) {
             Debug.Log("You cannot create multiple windows.", LogType.WARNING);
             return;
         }
 
-        currentWindow = new Window();
-    }
-
-    private Window() {
-        init();
-        loop();
-
-        // Free the window callback & destroy the window
-        Callbacks.glfwFreeCallbacks(window);
-        GLFW.glfwDestroyWindow(window);
-
-
-        // Terminate GLFW and free the error callback
-        GLFW.glfwTerminate();
-        GLFW.glfwSetErrorCallback(null).free();
-    }
-
-    private void init() {
         // TODO: Replace with our own debugger
+        // Print glfw errors
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW
@@ -53,15 +35,15 @@ public class Window {
 
         // Create window
         CharSequence windowTitleSeq = new StringBuilder(Config.WINDOW_TITLE);
-        window = GLFW.glfwCreateWindow(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT, windowTitleSeq, NULL, NULL);
+        windowHandle = GLFW.glfwCreateWindow(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT, windowTitleSeq, NULL, NULL);
 
-        if (window == NULL) {
+        if (windowHandle == NULL) {
             Debug.Log("Couldn't create GLFW window.", LogType.FATAL);
             throw new RuntimeException();
         }
 
         // Setup key callback // TODO: Change Key Callback
-        GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+        GLFW.glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
             if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
                 GLFW.glfwSetWindowShouldClose(window, true);
         });
@@ -73,25 +55,32 @@ public class Window {
             IntBuffer pHeight = stack.mallocInt(1);
 
             // Get: window size, resolution of primary monitor
-            GLFW.glfwGetWindowSize(window, pWidth, pHeight);
+            GLFW.glfwGetWindowSize(windowHandle, pWidth, pHeight);
             GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 
             // Center window
             GLFW.glfwSetWindowPos(
-                    window,
+                    windowHandle,
                     (vidMode.width() - pWidth.get(0)) / 2,
                     (vidMode.height() - pHeight.get(0)) / 2
             );
         }
 
         // Final settings, set visible
-        GLFW.glfwShowWindow(window);
+        GLFW.glfwShowWindow(windowHandle);
     }
 
-    private void loop() {
-        while (!GLFW.glfwWindowShouldClose(window)) {
+    public static void Deconstruct() {
+        // Free the window callback & destroy the window
+        Callbacks.glfwFreeCallbacks(windowHandle);
+        GLFW.glfwDestroyWindow(windowHandle);
 
-            GLFW.glfwPollEvents();
-        }
+        // Terminate GLFW and free the error callback
+        GLFW.glfwTerminate();
+        GLFW.glfwSetErrorCallback(null).free();
+    }
+
+    public static long GetWindowHandle() {
+        return windowHandle;
     }
 }

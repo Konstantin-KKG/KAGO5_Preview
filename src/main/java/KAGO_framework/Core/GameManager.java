@@ -2,14 +2,14 @@ package KAGO_framework.Core;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
+import KAGO_framework.Core.Subsystems.Graphics.Window;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 import KAGO_framework.Core.Subsystems.SubsystemInitializer;
 import MyProject.Control.GameController;
+import org.lwjgl.glfw.GLFW;
 
 public class GameManager implements Runnable {
     // Main loop settings
-    boolean running = true;
-
     long initialTime = System.nanoTime();
     long timer = System.currentTimeMillis();
     final double TIME_U = 1000000000.d / 60.d;
@@ -25,9 +25,29 @@ public class GameManager implements Runnable {
         initSystems();
         initGame();
 
-        Debug.Log("Running Main Loop", LogType.LOG);
-        // Main loop:
-        while (running) {
+        loop();
+    }
+
+    private void initSystems() {
+        SubsystemInitializer.Initialize();
+        SubsystemComponentDistributor.Initialize();
+    }
+
+    private void initGame() {
+        // Create & Load scene
+        GameScene scene = new GameScene();
+        LoadScene(scene);
+        Debug.Log("Created/Set default GameScene", LogType.LOG);
+
+        // Create game controller
+        gameController = new GameController(this, scene);
+        Debug.Log("Created GameController", LogType.LOG);
+    }
+
+    private void loop() {
+        long windowHandle = Window.GetWindowHandle();
+
+        while (!GLFW.glfwWindowShouldClose(windowHandle)) {
             long currentTime = System.nanoTime();
             deltaU += (currentTime - initialTime) / TIME_U;
             deltaF += (currentTime - initialTime) / TIME_F;
@@ -52,21 +72,12 @@ public class GameManager implements Runnable {
                 ticks = 0;
                 timer += 1000;
             }
+
+            GLFW.glfwPollEvents();
         }
-    }
 
-    private void initSystems() {
-        SubsystemInitializer.Initialize();
-        SubsystemComponentDistributor.Initialize();
-    }
-
-    private void initGame() {
-        GameScene scene = new GameScene();
-        LoadScene(scene);
-        Debug.Log("Created/Set default GameScene", LogType.LOG);
-
-        gameController = new GameController(this, scene);
-        Debug.Log("Created GameController", LogType.LOG);
+        // Terminate & stuff (when window is closed)
+        Window.Deconstruct();
     }
 
     public void LoadScene(GameScene scene) {

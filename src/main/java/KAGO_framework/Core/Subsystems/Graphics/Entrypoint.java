@@ -7,6 +7,6 @@ public class Entrypoint extends SubsystemEntrypoint {
 
     @Override
     public void Setup() {
-        Window.CreateWindow();
+        Window.Construct();
     }
 }
