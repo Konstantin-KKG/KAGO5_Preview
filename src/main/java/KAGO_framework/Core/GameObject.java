@@ -1,7 +1,6 @@
 package KAGO_framework.Core;
 
 import KAGO_framework.Core.Subsystems.Component;
-
 import java.util.ArrayList;
 
 public class GameObject {

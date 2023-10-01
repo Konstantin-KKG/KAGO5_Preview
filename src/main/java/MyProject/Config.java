@@ -11,7 +11,7 @@ public class Config {
     // Window Settings
     public final static String WINDOW_TITLE = "Empty Project - KAGO.5";
     public final static int WINDOW_WIDTH = 1280;
-    public final static int WINDOW_HEIGHT = 720 + 29; // The 29 pixels extra are for the title bar
+    public final static int WINDOW_HEIGHT = 720;
 
     // Other Settings
     public final static RendererOptions RENDERER_OPTION = RendererOptions.LEGACY_2D;
