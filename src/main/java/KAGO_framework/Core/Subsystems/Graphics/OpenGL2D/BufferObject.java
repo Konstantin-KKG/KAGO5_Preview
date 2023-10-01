@@ -12,19 +12,19 @@ public class BufferObject {
         handle = glGenBuffers();
         this.target = target;
         Bind();
-        glBufferData(target, data ,GL_STATIC_DRAW);
+        glBufferData(target, data ,GL_DYNAMIC_DRAW);
     }
     public BufferObject(int target,int[] data){
         handle = glGenBuffers();
         this.target = target;
         Bind();
-        glBufferData(target, data ,GL_STATIC_DRAW);
+        glBufferData(target, data ,GL_DYNAMIC_DRAW);
     }
     public BufferObject(int target,double[] data){
         handle = glGenBuffers();
         this.target = target;
         Bind();
-        glBufferData(target, data ,GL_STATIC_DRAW);
+        glBufferData(target, data ,GL_DYNAMIC_DRAW);
     }
     public void Bind(){
         glBindBuffer(target, handle);

@@ -3,6 +3,7 @@ package KAGO_framework.Core;
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
 import KAGO_framework.Core.Subsystems.Component;
+import KAGO_framework.Core.Subsystems.Graphics.OpenGL2D.Renderer;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 import KAGO_framework.Core.Subsystems.SubsystemInitializer;
@@ -15,10 +16,11 @@ public class GameManager implements Runnable {
 
     long timer = System.currentTimeMillis();
     int frames;
-   
+    Renderer renderer;
     public void run() {
         initSystems();
         initGame();
+
 
         loop();
     }
@@ -41,6 +43,10 @@ public class GameManager implements Runnable {
 
     private void loop() {
         long windowHandle = Window.GetWindowHandle();
+        renderer = new Renderer(windowHandle);
+        renderer.DrawLine(-.5f,-.5f,.9f,.9f);
+        renderer.DrawRectangle(0,0,0.5f,0.5f);
+        renderer.DrawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
 
         while (!GLFW.glfwWindowShouldClose(windowHandle)) {
             // Update Components
@@ -50,7 +56,7 @@ public class GameManager implements Runnable {
                     SubsystemComponentDistributor.Distribute(component);
 
             // Render TODO: MALICIOUS JULIUS RENDERER
-
+            renderer.Render();
             // FPS
             frames++;
             if(System.currentTimeMillis() - timer > 1000) {

@@ -1,99 +1,41 @@
 package KAGO_framework.Core.Subsystems.Graphics.OpenGL2D;
 
-import KAGO_framework.Core.GameManager;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.Version;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWVidMode;
+import KAGO_framework.Core.Subsystems.Graphics.RendererBase;
+import MyProject.Config;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.system.MemoryStack;
 
-import java.nio.IntBuffer;
-import java.util.Objects;
+import java.util.ArrayList;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryStack.stackPush;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class Renderer extends KAGO_framework.Core.Subsystems.Graphics.RendererBase {
+public class Renderer extends RendererBase {
 
-    private VertexArrayObject VAO;
-    private BufferObject VBO,EBO;
+
+    private int timer;
     private long window;
     private int shaderProgram;
+    private ArrayList<GraphicsObj> objects = new ArrayList<>();
     private final float[] vertices = {
             -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
-            0.0f,  0.5f, 0.0f
+            0.0f, 0.5f, 0.0f
+    };
+    private final float[] vertices2 = {
+            0.5f, 0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            0.0f, 0.5f, 0.0f
     };
     private final int[] indices = {0, 1, 2};
-    public Renderer(){
-    }
-    public void run() {
-        init();
-        loop();
 
-        // Free the window callbacks and destroy the window
-        glfwFreeCallbacks(window);
-        glfwDestroyWindow(window);
-
-        // Terminate GLFW and free the error callback
-        glfwTerminate();
-        Objects.requireNonNull(glfwSetErrorCallback(null)).free();
-    }
-
-    private void init() {
-        // Setup an error callback. The default implementation
-        // will print the error message in System.err.
-        GLFWErrorCallback.createPrint(System.err).set();
-
-        // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if ( !glfwInit() )
-            throw new IllegalStateException("Unable to initialize GLFW");
-
-        // Configure GLFW
-        glfwDefaultWindowHints(); // optional, the current window hints are already the default
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
-        // Create the window
-        window = glfwCreateWindow(800, 800, "Hello World!", NULL, NULL);
-        if ( window == NULL )
-            throw new RuntimeException("Failed to create the GLFW window");
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-        });
-
-        // Get the thread stack and push a new frame
-        try ( MemoryStack stack = stackPush() ) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
-
-            // Get the window size passed to glfwCreateWindow
-            glfwGetWindowSize(window, pWidth, pHeight);
-
-            // Get the resolution of the primary monitor
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            // Center the window
-            glfwSetWindowPos(
-                    window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
-        } // the stack frame is popped automatically
-
+    public Renderer(long windowHandle) {
+        this.window = windowHandle;
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
         // Enable v-sync
         glfwSwapInterval(1);
 
         // Make the window visible
-        glfwShowWindow(window);
 
         // This line is critical for LWJGL's interoperation with GLFW's
         // OpenGL context, or any context that is managed externally.
@@ -103,45 +45,74 @@ public class Renderer extends KAGO_framework.Core.Subsystems.Graphics.RendererBa
         GL.createCapabilities();
 
 
-        glViewport(0, 0, 800, 800);
-
+        glViewport(0, 0, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
         boolean success = createShaders();
-        if(!success)
+        if (!success)
             System.err.println("Failed to Create/Compile Shaders");
 
         glUseProgram(shaderProgram);
 
-        VBO = new BufferObject(GL_ARRAY_BUFFER,vertices);
-        EBO = new BufferObject(GL_ELEMENT_ARRAY_BUFFER,indices);
-        VAO = new VertexArrayObject(VBO,EBO);
-        VAO.AttributePointer(0,3);
-
+        /*objects.add(new GraphicsObj(vertices,indices));
+        objects.add(new GraphicsObj(vertices2,indices));*/
         // Set the clear color
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
-    public void loop() {
+    public void Render() {
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while ( !glfwWindowShouldClose(window)) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+        //while ( !glfwWindowShouldClose(window)) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-
-
-            glUseProgram(shaderProgram);
-            VAO.Bind();
-
-            glDrawElements(GL_TRIANGLES,vertices.length,GL_UNSIGNED_INT ,0);
-
-            // Poll for window events. The key callback above will only be
-            // invoked during this call.
-            glfwPollEvents();
-            glfwSwapBuffers(window); // swap the color buffers
-
+        glUseProgram(shaderProgram);
+        for (GraphicsObj object : objects) {
+            object.Bind();
+            glDrawElements(object.drawMode, object.getIndicesLength(), GL_UNSIGNED_INT,0L);
         }
+
+
+        // Poll for window events. The key callback above will only be
+        // invoked during this call.
+        glfwPollEvents();
+        glfwSwapBuffers(window); // swap the color buffers
+
+        //}
     }
+
+    @Override
+    public void DrawLine(float x1, float y1, float x2, float y2) {
+        float[] verts = new float[]{
+                x1, y1, 0.0f,
+                x2, y2, 0.0f};
+        int[] inds = new int[]{0, 1};
+        objects.add(new GraphicsObj(verts, inds, GL_LINES));
+    }
+
+    @Override
+    public void DrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3) {
+        float[] verts = new float[]{
+                x1, y1, 0.0f,
+                x2, y2, 0.0f,
+                x3, y3, 0.0f
+        };
+        int[] inds = new int[]{0, 1, 2};
+        objects.add(new GraphicsObj(verts, inds, GL_TRIANGLES));
+    }
+
+    @Override
+    public void DrawRectangle(float x, float y, float width, float height) {
+        float[] verts = new float[]{
+                x, y, 0f,
+                x, y - height, 0f,
+                x + width, y, 0f,
+                x + width, y - height, 0f
+        };
+        int[] inds = new int[]{0, 1, 3, 3, 2, 0};
+        objects.add(new GraphicsObj(verts, inds, GL_TRIANGLES));
+    }
+
     //TODO Integrate Logging
-    private boolean createShaders(){
+    private boolean createShaders() {
         int vertexShader = glCreateShader(GL_VERTEX_SHADER);
         boolean failed = false;
         //Vertex Shader Source Code
@@ -152,11 +123,11 @@ public class Renderer extends KAGO_framework.Core.Subsystems.Graphics.RendererBa
                 {
                    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
                 }\0""";
-        glShaderSource(vertexShader,vertexShaderSource);
+        glShaderSource(vertexShader, vertexShaderSource);
         glCompileShader(vertexShader);
 
-        int success = glGetShaderi(vertexShader ,GL_COMPILE_STATUS);
-        if(success == GL_FALSE) {
+        int success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
+        if (success == GL_FALSE) {
             System.out.println("Compilation Fail(Vertex)");
             System.out.println(glGetShaderInfoLog(vertexShader));
             failed = true;
@@ -175,8 +146,8 @@ public class Renderer extends KAGO_framework.Core.Subsystems.Graphics.RendererBa
                 \0""";
         glShaderSource(fragmentShader, fragmentShaderSource);
         glCompileShader(fragmentShader);
-        success = glGetShaderi(fragmentShader ,GL_COMPILE_STATUS);
-        if(success == GL_FALSE) {
+        success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
+        if (success == GL_FALSE) {
             System.out.println("Compilation Fail(FragmentShader)");
             System.out.println(glGetShaderInfoLog(fragmentShader));
             failed = true;
@@ -189,8 +160,8 @@ public class Renderer extends KAGO_framework.Core.Subsystems.Graphics.RendererBa
 
         glLinkProgram(shaderProgram);
 
-        success = glGetProgrami(shaderProgram,GL_LINK_STATUS);
-        if(success == GL_FALSE) {
+        success = glGetProgrami(shaderProgram, GL_LINK_STATUS);
+        if (success == GL_FALSE) {
             System.out.println("Link Fail(ShaderProgram)");
             System.out.println(glGetProgramInfoLog(shaderProgram));
             failed = true;
