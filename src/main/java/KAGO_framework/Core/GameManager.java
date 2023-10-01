@@ -12,8 +12,8 @@ public class GameManager implements Runnable {
 
     long initialTime = System.nanoTime();
     long timer = System.currentTimeMillis();
-    final double timeU = 1000000000.d / 60.d;
-    final double timeF = 1000000000.d / 144.d;
+    final double TIME_U = 1000000000.d / 60.d;
+    final double TIME_F = 1000000000.d / 144.d;
     double deltaU = 0, deltaF = 0;
     int ticks = 0, frames = 0;
 
@@ -29,8 +29,8 @@ public class GameManager implements Runnable {
         // Main loop:
         while (running) {
             long currentTime = System.nanoTime();
-            deltaU += (currentTime - initialTime) / timeU;
-            deltaF += (currentTime - initialTime) / timeF;
+            deltaU += (currentTime - initialTime) / TIME_U;
+            deltaF += (currentTime - initialTime) / TIME_F;
             initialTime = currentTime;
 
             if (deltaU >= 1) {
