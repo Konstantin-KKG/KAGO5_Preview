@@ -2,6 +2,7 @@ package KAGO_framework.Core;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
+import KAGO_framework.Core.Subsystems.Graphics.OpenGL2D.Renderer;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 import KAGO_framework.Core.Subsystems.SubsystemInitializer;
 import MyProject.Control.GameController;
@@ -24,7 +25,7 @@ public class GameManager implements Runnable {
     public void run() {
         initSystems();
         initGame();
-
+        new Renderer().run();
         Debug.Log("Running Main Loop", LogType.LOG);
         // Main loop:
         while (running) {
