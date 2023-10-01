@@ -9,16 +9,11 @@ import MyProject.Control.GameController;
 import org.lwjgl.glfw.GLFW;
 
 public class GameManager implements Runnable {
-    // Main loop settings
-    long initialTime = System.nanoTime();
-    long timer = System.currentTimeMillis();
-    final double TIME_U = 1000000000.d / 60.d;
-    final double TIME_F = 1000000000.d / 144.d;
-    double deltaU = 0, deltaF = 0;
-    int ticks = 0, frames = 0;
-
     // References for future use
     private GameController gameController;
+
+    long timer = System.currentTimeMillis();
+    int frames;
    
     public void run() {
         initSystems();
@@ -35,7 +30,8 @@ public class GameManager implements Runnable {
     private void initGame() {
         // Create & Load scene
         Scene scene = new Scene();
-        Debug.Log("Created/Set default GameScene", LogType.LOG);
+        SceneManager.LoadScene(scene);
+        Debug.Log("Created/Load default GameScene", LogType.LOG);
 
         // Create game controller
         gameController = new GameController(this, scene);
@@ -46,28 +42,19 @@ public class GameManager implements Runnable {
         long windowHandle = Window.GetWindowHandle();
 
         while (!GLFW.glfwWindowShouldClose(windowHandle)) {
-            long currentTime = System.nanoTime();
-            deltaU += (currentTime - initialTime) / TIME_U;
-            deltaF += (currentTime - initialTime) / TIME_F;
-            initialTime = currentTime;
+            // Update Components
+            GameObject[] gameObjects = SceneManager.GetAllActiveGameObjects();
+            for (GameObject gameObject : gameObjects)
+                for (Component component : gameObject.components)
+                    SubsystemComponentDistributor.Distribute(component);
 
-            if (deltaU >= 1) {
-                // getInput();
-                // update();
-                ticks++;
-                deltaU--;
-            }
+            // Render TODO: MALICIOUS JULIUS RENDERER
 
-            if (deltaF >= 1) {
-                // render();
-                frames++;
-                deltaF--;
-            }
-
-            if (System.currentTimeMillis() - timer > 1000) {
-                System.out.printf("UPS: %s, FPS: %s%n", ticks, frames);
+            // FPS
+            frames++;
+            if(System.currentTimeMillis() - timer > 1000) {
+                System.out.printf("FPS: %s \n", frames);
                 frames = 0;
-                ticks = 0;
                 timer += 1000;
             }
 

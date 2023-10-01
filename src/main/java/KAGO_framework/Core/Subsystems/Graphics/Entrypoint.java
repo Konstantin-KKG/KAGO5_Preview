@@ -9,4 +9,9 @@ public class Entrypoint extends SubsystemEntrypoint {
     public void Setup() {
         Window.Construct();
     }
+
+    @Override
+    public void Update() {
+
+    }
 }

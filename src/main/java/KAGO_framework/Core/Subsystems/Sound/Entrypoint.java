@@ -7,4 +7,9 @@ public class Entrypoint extends SubsystemEntrypoint {
     public void Setup() {
 
     }
+
+    @Override
+    public void Update() {
+
+    }
 }
