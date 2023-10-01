@@ -1,6 +1,6 @@
 package KAGO_framework.Core.Subsystems.Graphics;
 
-public abstract class Renderer {
+public abstract class RendererBase {
     // Create or Manage: window context
 
     // Draw:
