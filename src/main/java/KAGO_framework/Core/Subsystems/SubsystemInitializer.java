@@ -9,14 +9,16 @@ import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
 import KAGO_framework.Utilities.Classes;
 
-/** initializes all SubsystemEntrypoints
- *  @author Kosta, Habib
+/**
+ * Is used to initialize all SubsystemEntrypoints
+ * @author Kosta, Habib
+ * @since 29.09.2023
  */
 public class SubsystemInitializer {
     private static final String ENTRYPOINTS_PACKAGE_URL = "KAGO_framework.Core.Subsystems";
 
     public static void Initialize() {
-        Type[] entrypointClasses =  reflectOnEntrypoints();
+        Type[] entrypointClasses = reflectOnEntrypoints();
         SubsystemEntrypoint[] entrypointObjects = createEntrypoints(entrypointClasses);
         setupSubsystems(entrypointObjects);
 

@@ -11,6 +11,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Is used to find specific classes in the project, based on different criteria
+ * @author Maxim, Kosta, Habib
+ * @since 30.09.2023
+ */
 public class Classes {
 
     /**

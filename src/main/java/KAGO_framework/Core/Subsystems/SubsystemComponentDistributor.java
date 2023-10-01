@@ -11,7 +11,7 @@ import java.util.HashMap;
 import KAGO_framework.Utilities.Classes;
 
 /**
- * Is used to manage all Subsystems
+ * Is used to get pairs of Components and ComponentHandlers to cache them
  * @author Kosta, Habib, Maxim and Julius
  * @since 28.09.2023
  */

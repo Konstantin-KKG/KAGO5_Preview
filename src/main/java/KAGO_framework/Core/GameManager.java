@@ -1,6 +1,5 @@
 package KAGO_framework.Core;
 
-import KAGO_framework.Core.Components.Test;
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
@@ -18,7 +17,7 @@ public class GameManager implements Runnable {
     double deltaU = 0, deltaF = 0;
     int ticks = 0, frames = 0;
 
-    //
+    // References for future use
     private GameController gameController;
     private GameScene activeGameScene;
    
@@ -26,6 +25,7 @@ public class GameManager implements Runnable {
         initSystems();
         initGame();
 
+        Debug.Log("Running Main Loop", LogType.LOG);
         // Main loop:
         while (running) {
             long currentTime = System.nanoTime();
@@ -63,10 +63,10 @@ public class GameManager implements Runnable {
     private void initGame() {
         GameScene scene = new GameScene();
         LoadScene(scene);
-        Debug.Log("Created/Set default GameScene.", LogType.LOG);
+        Debug.Log("Created/Set default GameScene", LogType.LOG);
 
         gameController = new GameController(this, scene);
-        Debug.Log("Created GameController.", LogType.LOG);
+        Debug.Log("Created GameController", LogType.LOG);
     }
 
     public void LoadScene(GameScene scene) {
