@@ -13,6 +13,7 @@ public class VertexArrayObject {
         Bind();
         vbo.Bind();
         ebo.Bind();
+
     }
     public void AttributePointer(int index, int size){
         glEnableVertexAttribArray(0);
