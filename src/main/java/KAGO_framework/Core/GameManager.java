@@ -19,7 +19,6 @@ public class GameManager implements Runnable {
 
     // References for future use
     private GameController gameController;
-    private GameScene activeGameScene;
    
     public void run() {
         initSystems();
@@ -35,8 +34,7 @@ public class GameManager implements Runnable {
 
     private void initGame() {
         // Create & Load scene
-        GameScene scene = new GameScene();
-        LoadScene(scene);
+        Scene scene = new Scene();
         Debug.Log("Created/Set default GameScene", LogType.LOG);
 
         // Create game controller
@@ -78,9 +76,5 @@ public class GameManager implements Runnable {
 
         // Terminate & stuff (when window is closed)
         Window.Deconstruct();
-    }
-
-    public void LoadScene(GameScene scene) {
-        activeGameScene = scene;
     }
 }

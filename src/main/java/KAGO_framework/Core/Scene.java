@@ -2,10 +2,10 @@ package KAGO_framework.Core;
 
 import java.util.ArrayList;
 
-public class GameScene {
+public class Scene {
     private ArrayList<GameObject> gameObjects;
 
-    public GameScene() {
+    public Scene() {
         gameObjects = new ArrayList<>();
     }
 
