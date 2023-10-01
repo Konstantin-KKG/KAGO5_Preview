@@ -5,6 +5,11 @@ import KAGO_framework.Config;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Is used to output information about current events
+ * @author Kosta, Habib and Maxim
+ * @since 30.09.2023
+ */
 public class Debug {
     private static final String ANSI_DEFAULT = "\u001B[0m";
     private static final String ANSI_GREEN = "\u001B[32m";

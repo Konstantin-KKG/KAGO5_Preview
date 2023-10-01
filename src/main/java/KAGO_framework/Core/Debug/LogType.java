@@ -1,8 +1,8 @@
 package KAGO_framework.Core.Debug;
 
 /**
- * Log: (logs) stuff <br></br>
- * Info: (logs) framework information <br></br>
+ * Log: (logs) general information <br></br>
+ * Info: (logs) framework specific information <br></br>
  * Success: expected behaviour <br></br>
  * Warning: expected fail <br></br>
  * Error: unexpected fail <br></br>

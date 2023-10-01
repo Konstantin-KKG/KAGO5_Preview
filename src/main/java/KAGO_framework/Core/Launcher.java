@@ -13,7 +13,7 @@ public class Launcher {
         new Launcher();
     }
 
-    Launcher() {
+    private Launcher() {
         GameManager gameManager = new GameManager();
         Thread mainThread = new Thread(gameManager);
 
