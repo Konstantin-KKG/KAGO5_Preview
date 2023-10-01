@@ -45,6 +45,10 @@ public class GameManager implements Runnable {
         long windowHandle = Window.GetWindowHandle();
         renderer = new Renderer(windowHandle);
         renderer.DrawLine(-.5f,-.5f,.9f,.9f);
+        renderer.DrawLine(-.5f,-.5f,.9f,.8f);
+        renderer.DrawLine(-.5f,-.5f,.9f,.7f);
+        renderer.DrawLine(-.5f,-.5f,.9f,.6f);
+        renderer.DrawLine(-.5f,-.5f,.9f,.5f);
         renderer.DrawRectangle(0,0,0.5f,0.5f);
         renderer.DrawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
 
