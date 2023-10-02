@@ -14,6 +14,11 @@ public class Config {
     public final static int WINDOW_HEIGHT = 720;
 
     // Other Settings
-    public final static RendererOptions RENDERER_OPTION = RendererOptions.LEGACY_2D;
+    public final static RendererOptions RENDERER_OPTION = RendererOptions.OPENGL_2D;
     public final static boolean USE_SOUND = true;
+
+    // Console output verbosity
+    public final static boolean LOG_AND_INFO_MESSAGES = true;
+    public final static boolean DEBUG_MESSAGES = true;
+    public final static boolean FPS = true;
 }

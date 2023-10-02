@@ -1,6 +1,6 @@
 package KAGO_framework.Core.Debug;
 
-import KAGO_framework.Config;
+import MyProject.Config;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Debug {
     private static final String ANSI_DEFAULT = "\u001B[0m";
+    private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_GREEN = "\u001B[32m";
     private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -43,6 +44,7 @@ public class Debug {
         switch (logType) {
             case LOG, INFO -> logInfo(messageBuilder.toString());
 
+            case PROCESS -> logDebug(messageBuilder.toString(), ANSI_BLUE);
             case SUCCESS -> logDebug(messageBuilder.toString(), ANSI_GREEN);
             case WARNING -> logDebug(messageBuilder.toString(), ANSI_YELLOW);
             case ERROR -> logDebug(messageBuilder.toString(), ANSI_RED);
@@ -51,7 +53,7 @@ public class Debug {
     }
 
     private static void logInfo(String message) {
-        if (!Config.LOG_AND_INFO_MESSAGES)
+        if (!MyProject.Config.LOG_AND_INFO_MESSAGES)
             return;
 
         System.out.println(ANSI_DEFAULT + message);

@@ -6,6 +6,7 @@ import KAGO_framework.Core.Subsystems.Component;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 import KAGO_framework.Core.Subsystems.SubsystemManager;
+import MyProject.Config;
 import MyProject.Control.GameController;
 import org.lwjgl.glfw.GLFW;
 
@@ -53,7 +54,7 @@ public class GameManager implements Runnable {
             SubsystemManager.UpdateSubsystems();
 
             // Render
-            // TODO: MALICIOUS JULIUS RENDERER
+            // TODO: Render (not Julius one)
 
             // Input
             // TODO: Input's

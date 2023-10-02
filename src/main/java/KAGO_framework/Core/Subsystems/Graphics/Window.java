@@ -17,8 +17,7 @@ public class Window {
             return;
         }
 
-        // TODO: Replace with our own debugger
-        // Print glfw errors
+        // Print glfw errors TODO: Replace with our own debugger
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW
@@ -65,9 +64,6 @@ public class Window {
                     (vidMode.height() - pHeight.get(0)) / 2
             );
         }
-
-        // Final settings, set visible
-        GLFW.glfwShowWindow(windowHandle);
     }
 
     public static void Deconstruct() {
