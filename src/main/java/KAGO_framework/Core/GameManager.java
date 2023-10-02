@@ -3,12 +3,16 @@ package KAGO_framework.Core;
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
 import KAGO_framework.Core.Subsystems.Component;
+import KAGO_framework.Core.Subsystems.Graphics.Entrypoint;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 import KAGO_framework.Core.Subsystems.SubsystemManager;
 import MyProject.Config;
 import MyProject.Control.GameController;
+import glm_.vec2.Vec2;
 import org.lwjgl.glfw.GLFW;
+
+import java.awt.*;
 
 public class GameManager implements Runnable {
     // References for future use

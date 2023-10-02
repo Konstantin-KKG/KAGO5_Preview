@@ -1,5 +1,7 @@
 package KAGO_framework.Core.Subsystems.Graphics;
 
+import KAGO_framework.Core.Subsystems.Graphics.Renderer.RendererBase;
+import KAGO_framework.Core.Subsystems.Graphics.Renderer.RendererSetup;
 import KAGO_framework.Core.Subsystems.SubsystemEntrypoint;
 import org.lwjgl.glfw.GLFW;
 

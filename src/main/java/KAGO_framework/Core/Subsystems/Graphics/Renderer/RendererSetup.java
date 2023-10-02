@@ -1,4 +1,4 @@
-package KAGO_framework.Core.Subsystems.Graphics;
+package KAGO_framework.Core.Subsystems.Graphics.Renderer;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
@@ -20,18 +20,18 @@ public class RendererSetup {
 
         // (GLFW) Setup OpenGL context & V-Sync setting
         GLFW.glfwMakeContextCurrent(windowHandle);
-        GLFW.glfwSwapInterval(1);
+        GLFW.glfwSwapInterval(0);
 
         // (OpenGL) Set context & Viewport
         GL.createCapabilities();
         glViewport(0, 0, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
 
-        return new KAGO_framework.Core.Subsystems.Graphics.OpenGL2D.Renderer();
+        return new KAGO_framework.Core.Subsystems.Graphics.Renderer.OpenGL2D.Renderer();
     }
 
     private static RendererBase createVulkanRenderer(long windowHandle) {
         Debug.Log("Creating (user configured) Vulkan backend Renderer.", LogType.PROCESS);
 
-        return new KAGO_framework.Core.Subsystems.Graphics.Vulkan2D.Renderer();
+        return new KAGO_framework.Core.Subsystems.Graphics.Renderer.Vulkan2D.Renderer();
     }
 }

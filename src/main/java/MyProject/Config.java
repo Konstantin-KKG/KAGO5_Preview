@@ -1,6 +1,6 @@
 package MyProject;
 
-import KAGO_framework.Core.Subsystems.Graphics.RendererOptions;
+import KAGO_framework.Core.Subsystems.Graphics.Renderer.RendererOptions;
 
 /**
  * In dieser Klasse werden globale, statische Einstellungen verwaltet.
