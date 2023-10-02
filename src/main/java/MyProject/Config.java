@@ -14,7 +14,7 @@ public class Config {
     public final static int WINDOW_HEIGHT = 720;
 
     // Other Settings
-    public final static RendererOptions RENDERER_OPTION = RendererOptions.OPENGL_2D;
+    public final static RendererOptions RENDERER_OPTION = RendererOptions.VULKAN_2D;
     public final static boolean USE_SOUND = true;
 
     // Console output verbosity

@@ -28,9 +28,14 @@ public class Window {
 
         // Window hints
         GLFW.glfwDefaultWindowHints();
-        GLFW.glfwWindowHint(GLFW.GLFW_CLIENT_API, GLFW.GLFW_NO_API);
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+
+        // Set glfw rendering api
+        switch (Config.RENDERER_OPTION) {
+            case OPENGL_2D -> GLFW.glfwWindowHint(GLFW.GLFW_CLIENT_API, GLFW.GLFW_OPENGL_API);
+            default -> GLFW.glfwWindowHint(GLFW.GLFW_CLIENT_API, GLFW.GLFW_NO_API);
+        }
 
         // Create window
         CharSequence windowTitleSeq = new StringBuilder(Config.WINDOW_TITLE);

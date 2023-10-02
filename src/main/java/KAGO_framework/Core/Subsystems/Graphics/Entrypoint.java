@@ -14,7 +14,8 @@ public class Entrypoint extends SubsystemEntrypoint {
         windowHandle = Window.GetWindowHandle();
 
         // Create renderer
-        rendererInUse = RendererSetup.CreateRenderer();
+        rendererInUse = RendererSetup.CreateBackendSpecificRenderer(windowHandle);
+        rendererInUse.Construct();
 
         // Show window
         GLFW.glfwShowWindow(windowHandle);
@@ -22,11 +23,12 @@ public class Entrypoint extends SubsystemEntrypoint {
 
     @Override
     public void Update() {
-
+        rendererInUse.RenderFrame();
     }
 
     @Override
     public void Stop() {
+        rendererInUse.Deconstruct();
         Window.Deconstruct();
     }
 }
