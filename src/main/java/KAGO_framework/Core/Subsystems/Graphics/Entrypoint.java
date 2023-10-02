@@ -4,18 +4,29 @@ import KAGO_framework.Core.Subsystems.SubsystemEntrypoint;
 import org.lwjgl.glfw.GLFW;
 
 public class Entrypoint extends SubsystemEntrypoint {
+    private static long windowHandle;
     public static RendererBase rendererInUse;
 
     @Override
     public void Start() {
+        // Create window
         Window.Construct();
+        windowHandle = Window.GetWindowHandle();
+
+        // Create renderer
         rendererInUse = RendererSetup.CreateRenderer();
 
-        GLFW.glfwShowWindow(Window.GetWindowHandle());
+        // Show window
+        GLFW.glfwShowWindow(windowHandle);
     }
 
     @Override
     public void Update() {
 
+    }
+
+    @Override
+    public void Stop() {
+        Window.Deconstruct();
     }
 }

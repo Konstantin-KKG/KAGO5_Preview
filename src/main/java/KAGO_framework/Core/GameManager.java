@@ -53,11 +53,7 @@ public class GameManager implements Runnable {
             // Update Subsystems
             SubsystemManager.UpdateSubsystems();
 
-            // Render
-            // TODO: Render (not Julius one)
-
-            // Input
-            // TODO: Input's
+            // TODO: Move to Input Subsystem
             GLFW.glfwPollEvents();
 
             // FPS
@@ -65,8 +61,8 @@ public class GameManager implements Runnable {
                 printStats();
         }
 
-        // Terminate & stuff (when window is closed)
-        Window.Deconstruct();
+        // Stop Subsystems
+        SubsystemManager.StopSubsystems();
     }
 
     private void printStats() {

@@ -12,4 +12,9 @@ public class Entrypoint extends SubsystemEntrypoint {
     public void Update() {
 
     }
+
+    @Override
+    public void Stop() {
+
+    }
 }

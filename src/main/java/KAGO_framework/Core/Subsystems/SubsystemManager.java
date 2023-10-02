@@ -32,6 +32,11 @@ public class SubsystemManager {
             subsystemEntrypoint.Update();
     }
 
+    public static void StopSubsystems() {
+        for (SubsystemEntrypoint subsystemEntrypoint : subsystemEntrypoints)
+            subsystemEntrypoint.Stop();
+    }
+
     private static Type[] reflectOnEntrypoints() {
         return Classes.FindClasses(ENTRYPOINTS_PACKAGE_URL, SubsystemEntrypoint.class);
     }
