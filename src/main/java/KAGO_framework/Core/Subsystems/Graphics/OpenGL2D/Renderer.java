@@ -4,9 +4,7 @@ import KAGO_framework.Core.Subsystems.Graphics.RendererBase;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
-
 import java.nio.FloatBuffer;
-
 import static org.lwjgl.opengl.GL33.*;
 
 public class Renderer extends RendererBase {
