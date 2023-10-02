@@ -5,7 +5,7 @@ import KAGO_framework.Core.Debug.LogType;
 import KAGO_framework.Core.Subsystems.Component;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
-import KAGO_framework.Core.Subsystems.SubsystemInitializer;
+import KAGO_framework.Core.Subsystems.SubsystemManager;
 import MyProject.Control.GameController;
 import org.lwjgl.glfw.GLFW;
 
@@ -24,7 +24,7 @@ public class GameManager implements Runnable {
     }
 
     private void initSystems() {
-        SubsystemInitializer.Initialize();
+        SubsystemManager.Initialize();
         SubsystemComponentDistributor.Initialize();
     }
 
@@ -49,20 +49,30 @@ public class GameManager implements Runnable {
                 for (Component component : gameObject.components)
                     SubsystemComponentDistributor.Distribute(component);
 
-            // Render TODO: MALICIOUS JULIUS RENDERER
+            // Update Subsystems
+            SubsystemManager.UpdateSubsystems();
+
+            // Render
+            // TODO: MALICIOUS JULIUS RENDERER
+
+            // Input
+            // TODO: Input's
+            GLFW.glfwPollEvents();
 
             // FPS
-            frames++;
-            if(System.currentTimeMillis() - timer > 1000) {
-                System.out.printf("FPS: %s \n", frames);
-                frames = 0;
-                timer += 1000;
-            }
-
-            GLFW.glfwPollEvents();
+            printStats();
         }
 
         // Terminate & stuff (when window is closed)
         Window.Deconstruct();
+    }
+
+    private void printStats() {
+        frames++;
+        if(System.currentTimeMillis() - timer > 1000) {
+            System.out.printf("FPS: %s \n", frames);
+            frames = 0;
+            timer += 1000;
+        }
     }
 }

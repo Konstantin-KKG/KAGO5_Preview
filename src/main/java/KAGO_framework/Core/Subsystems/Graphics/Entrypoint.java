@@ -6,7 +6,7 @@ public class Entrypoint extends SubsystemEntrypoint {
     public static RendererBase rendererInUse;
 
     @Override
-    public void Setup() {
+    public void Start() {
         Window.Construct();
     }
 

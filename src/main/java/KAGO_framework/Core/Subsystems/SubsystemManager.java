@@ -14,15 +14,22 @@ import KAGO_framework.Utilities.Classes;
  * @author Kosta, Habib
  * @since 29.09.2023
  */
-public class SubsystemInitializer {
+public class SubsystemManager {
     private static final String ENTRYPOINTS_PACKAGE_URL = "KAGO_framework.Core.Subsystems";
 
+    private static SubsystemEntrypoint[] subsystemEntrypoints;
+
     public static void Initialize() {
-        Type[] entrypointClasses = reflectOnEntrypoints();
-        SubsystemEntrypoint[] entrypointObjects = createEntrypoints(entrypointClasses);
-        setupSubsystems(entrypointObjects);
+        Type[] subsystemEntrypointClasses = reflectOnEntrypoints();
+        subsystemEntrypoints = createEntrypoints(subsystemEntrypointClasses);
+        startSubsystems(subsystemEntrypoints);
 
         Debug.Log("Finished initializing all Subsystems.", LogType.SUCCESS);
+    }
+
+    public static void UpdateSubsystems() {
+        for (SubsystemEntrypoint subsystemEntrypoint : subsystemEntrypoints)
+            subsystemEntrypoint.Update();
     }
 
     private static Type[] reflectOnEntrypoints() {
@@ -57,15 +64,15 @@ public class SubsystemInitializer {
         return entrypoints;
     }
 
-    private static void setupSubsystems(SubsystemEntrypoint[] subsystemEntrypoints){
+    private static void startSubsystems(SubsystemEntrypoint[] subsystemEntrypoints){
         for (SubsystemEntrypoint entrypoint: subsystemEntrypoints) {
-            entrypoint.Setup();
+            entrypoint.Start();
 
+            // Log the started subsystem
             String packageName = Classes.GetPackageNameOfClass(entrypoint.getClass())
                     .replace(ENTRYPOINTS_PACKAGE_URL, "")
                     .substring(1);
             String debugMessage = String.format("Initialized (%s) Subsystem.", packageName);
-
             Debug.Log(debugMessage, LogType.SUCCESS);
         }
     }
