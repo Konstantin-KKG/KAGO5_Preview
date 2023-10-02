@@ -33,11 +33,11 @@ public class GameManager implements Runnable {
         // Create & Load scene
         Scene scene = new Scene();
         SceneManager.LoadScene(scene);
-        Debug.Log("Created/Load default GameScene", LogType.LOG);
+        Debug.Log("Created/Load default GameScene.", LogType.LOG);
 
         // Create game controller
         gameController = new GameController(this, scene);
-        Debug.Log("Created GameController", LogType.LOG);
+        Debug.Log("Created GameController.", LogType.LOG);
     }
 
     private void loop() {
@@ -61,7 +61,8 @@ public class GameManager implements Runnable {
             GLFW.glfwPollEvents();
 
             // FPS
-            printStats();
+            if (Config.FPS)
+                printStats();
         }
 
         // Terminate & stuff (when window is closed)

@@ -41,7 +41,7 @@ public class Window {
             throw new RuntimeException();
         }
 
-        // Setup key callback // TODO: Change Key Callback
+        // Setup "close window" key callback
         GLFW.glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
             if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
                 GLFW.glfwSetWindowShouldClose(window, true);
