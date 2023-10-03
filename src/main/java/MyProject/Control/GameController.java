@@ -1,14 +1,17 @@
 package MyProject.Control;
 
-import KAGO_framework.Core.Components.Sound;
+import KAGO_framework.Core.Components.*;
 import KAGO_framework.Core.GameManager;
 import KAGO_framework.Core.GameObject;
 import KAGO_framework.Core.Scene;
+import KAGO_framework.Core.Subsystems.Sound.SoundHandler;
+import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 
 public class GameController {
 
     private GameManager gameManager;
     private Scene defaultScene;
+    private Sound sound;
 
     public GameController(GameManager gameManager, Scene defaultScene){
         this.gameManager = gameManager;
@@ -16,10 +19,10 @@ public class GameController {
     }
 
     public void startProgram() {
-        GameObject go = new GameObject();
-        Sound s = new Sound("src/main/resources/sound/DeterminedDestination.mp3");
-        go.components.add(s);
-        s.Start();
+        GameObject gameObject = new GameObject();
+        sound = new Sound("src/main/resources/sound/vine-boom.mp3", true);
+        gameObject.components.add(sound);
+        defaultScene.AddGameObject(gameObject);
     }
 
     public void updateProgram(double dt){

@@ -15,6 +15,6 @@ public class Entrypoint extends SubsystemEntrypoint {
 
     @Override
     public void Stop() {
-        SoundHandler.Stop();
+
     }
 }
