@@ -4,8 +4,6 @@ import KAGO_framework.Core.Components.*;
 import KAGO_framework.Core.GameManager;
 import KAGO_framework.Core.GameObject;
 import KAGO_framework.Core.Scene;
-import KAGO_framework.Core.Subsystems.Sound.SoundHandler;
-import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;
 
 public class GameController {
 
