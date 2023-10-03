@@ -32,9 +32,6 @@ public class Sound extends Component {
         }
     }
 
-    /**
-     * This method plays a sound.
-     */
     public void playSound(){
         if(!playing) {
             playing = true;
@@ -54,6 +51,13 @@ public class Sound extends Component {
         } else {
             Debug.Log("Sound is not looped!", LogType.WARNING);
         }
+    }
+
+    /**
+     * @param volume value between 0 and 1
+     */
+    public void setVolume(double volume){
+        mediaPlayer.setVolume(volume);
     }
 
     private void setMediaPlayer(MediaPlayer mediaPlayer){

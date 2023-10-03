@@ -18,10 +18,12 @@ public class GameController {
 
     public void startProgram() {
         GameObject gameObject = new GameObject();
-        sound = new Sound("src/main/resources/sound/vine-boom.mp3", true);
+        sound = new Sound("src/main/resources/sound/vine-boom.mp3", false);
 
         gameObject.components.add(sound);
         defaultScene.AddGameObject(gameObject);
+
+        sound.playSound();
 
     }
 
