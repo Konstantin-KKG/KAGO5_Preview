@@ -9,13 +9,11 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
 public class Sound extends Component {
-    private String filename;
     private boolean looping = false;
     private boolean playing = false;
     private MediaPlayer mediaPlayer;
 
     public Sound(String filename, boolean looping){
-        this.filename = filename;
         this.looping = looping;
         createMediaPlayer(filename, looping);
     }
