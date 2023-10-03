@@ -9,7 +9,7 @@ public class SoundHandler extends ComponentHandler {
     @Override
     public void ExecLogic(Component component) {
         Sound sound = (Sound) component;
-        sound.playSound();
+        sound.switchMediaPlayerState();
     }
 
 }
