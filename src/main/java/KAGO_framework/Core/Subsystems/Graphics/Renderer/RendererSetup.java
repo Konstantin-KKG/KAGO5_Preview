@@ -30,7 +30,7 @@ public class RendererSetup {
     }
 
     private static RendererBase createVulkanRenderer(long windowHandle) {
-        Debug.Log("Creating (user configured) Vulkan backend Renderer.", LogType.PROCESS);
+        Debug.Log("Vulkan backend is not yet implemented.", LogType.WARNING);
 
         return new KAGO_framework.Core.Subsystems.Graphics.Renderer.Vulkan2D.Renderer();
     }

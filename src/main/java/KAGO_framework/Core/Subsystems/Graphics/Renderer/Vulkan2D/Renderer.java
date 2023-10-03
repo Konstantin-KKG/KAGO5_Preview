@@ -21,29 +21,4 @@ public class Renderer extends RendererBase {
     public void Deconstruct() {
 
     }
-
-    @Override
-    public void DrawLine(Vec2 start, Vec2 end, Color color, int thickness) {
-
-    }
-
-    @Override
-    public void DrawRectangle(Vec2 pos, Vec2 size, Color color, boolean fill) {
-
-    }
-
-    @Override
-    public void DrawCircle(Vec2 pos, float radius, Color color, boolean fill) {
-
-    }
-
-    @Override
-    public void DrawSprite() {
-
-    }
-
-    @Override
-    public void DrawMesh() {
-
-    }
 }
