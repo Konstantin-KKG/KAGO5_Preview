@@ -3,6 +3,7 @@ package KAGO_framework.Core.Subsystems.Graphics.BetterRenderer;
 import KAGO_framework.Core.Subsystems.Graphics.BetterRenderer.Shader.Shader;
 import KAGO_framework.Core.Subsystems.Graphics.Renderer.RendererBase;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
+import MyProject.Config;
 import glm_.vec2.Vec2;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL30;
@@ -27,7 +28,7 @@ public class Renderer extends RendererBase {
         windowHandle = Window.GetWindowHandle();
 
         this.shader.start();
-        DrawRectangle(new Vec2(-0.5, -0.5), new Vec2(1, 1), new Color(187, 10, 127), true);
+        DrawRectangle(new Vec2(0, 0), new Vec2(100, 100), new Color(187, 10, 127), true);
     }
 
     @Override
@@ -50,10 +51,10 @@ public class Renderer extends RendererBase {
     @Override
     public void DrawRectangle(Vec2 pos, Vec2 size, Color color, boolean fill) {
         float[] vertices = {
-                pos.getX(), pos.getY() + size.getY(), 0,
-                pos.getX(), pos.getY(), 0,
-                pos.getX() + size.getX(), pos.getY(), 0,
-                pos.getX() + size.getX(), pos.getY() + size.getY(), 0
+                pos.getX() / Config.WINDOW_WIDTH - 1f, -(pos.getY() + size.getY()) / Config.WINDOW_HEIGHT + 1f, 0,
+                pos.getX() / Config.WINDOW_WIDTH - 1f, pos.getY() / Config.WINDOW_HEIGHT + 1f, 0,
+                (pos.getX() + size.getX()) / Config.WINDOW_WIDTH - 1f, pos.getY() / Config.WINDOW_HEIGHT + 1f, 0,
+                (pos.getX() + size.getX()) / Config.WINDOW_WIDTH - 1f, -(pos.getY() + size.getY()) / Config.WINDOW_HEIGHT + 1f, 0
         };
         int[] indices = {
                 0,1,2,
