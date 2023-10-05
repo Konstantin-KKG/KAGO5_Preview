@@ -38,6 +38,7 @@ public class GameManager implements Runnable {
         // Create game controller
         gameController = new GameController(this, scene);
         Debug.Log("Created GameController.", LogType.LOG);
+        gameController.startProgram();
     }
 
     private void loop() {
@@ -47,11 +48,14 @@ public class GameManager implements Runnable {
             // Update Components
             GameObject[] gameObjects = SceneManager.GetAllActiveGameObjects();
             for (GameObject gameObject : gameObjects)
-                for (Component component : gameObject.components)
+                for (Component component : gameObject.getComponents())
                     SubsystemComponentDistributor.Distribute(component);
 
             // Update Subsystems
             SubsystemManager.UpdateSubsystems();
+
+            //Update game logic
+            gameController.updateProgram(0.16); //TODO create delta time
 
             // TODO: Move to Input Subsystem
             GLFW.glfwPollEvents();
