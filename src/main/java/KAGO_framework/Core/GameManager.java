@@ -2,6 +2,9 @@ package KAGO_framework.Core;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
+import KAGO_framework.Core.SceneGraph.GameObject;
+import KAGO_framework.Core.SceneGraph.Scene;
+import KAGO_framework.Core.SceneGraph.SceneManager;
 import KAGO_framework.Core.Subsystems.Component;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
 import KAGO_framework.Core.Subsystems.SubsystemComponentDistributor;

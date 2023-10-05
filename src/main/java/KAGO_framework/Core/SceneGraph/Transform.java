@@ -1,4 +1,4 @@
-package KAGO_framework.Core;
+package KAGO_framework.Core.SceneGraph;
 
 import glm_.vec3.Vec3;
 

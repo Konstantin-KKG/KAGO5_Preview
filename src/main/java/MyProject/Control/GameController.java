@@ -1,9 +1,8 @@
 package MyProject.Control;
 
 import KAGO_framework.Core.Components.*;
-import KAGO_framework.Core.GameManager;
-import KAGO_framework.Core.GameObject;
-import KAGO_framework.Core.Scene;
+import KAGO_framework.Core.SceneGraph.GameObject;
+import KAGO_framework.Core.SceneGraph.Scene;
 import KAGO_framework.Core.Subsystems.Component;
 
 public class GameController {

@@ -1,4 +1,4 @@
-package KAGO_framework.Core;
+package KAGO_framework.Core.SceneGraph;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
