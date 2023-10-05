@@ -7,12 +7,9 @@ import KAGO_framework.Core.Scene;
 import KAGO_framework.Core.Subsystems.Component;
 
 public class GameController {
-
-    private final GameManager GAME_MANAGER;
     private final Scene DEFAULT_SCENE;
 
-    public GameController(GameManager gameManager, Scene defaultScene){
-        this.GAME_MANAGER = gameManager;
+    public GameController(Scene defaultScene){
         this.DEFAULT_SCENE = defaultScene;
     }
 

@@ -11,7 +11,6 @@ import MyProject.Control.GameController;
 import org.lwjgl.glfw.GLFW;
 
 public class GameManager implements Runnable {
-    // References for future use
     private GameController gameController;
 
     long timer = System.currentTimeMillis();
@@ -36,7 +35,7 @@ public class GameManager implements Runnable {
         Debug.Log("Created/Load default GameScene.", LogType.LOG);
 
         // Create game controller
-        gameController = new GameController(this, scene);
+        gameController = new GameController(scene);
         Debug.Log("Created GameController.", LogType.LOG);
         gameController.startProgram();
     }
@@ -55,7 +54,7 @@ public class GameManager implements Runnable {
             SubsystemManager.UpdateSubsystems();
 
             //Update game logic
-            gameController.updateProgram(0.16); //TODO create delta time
+            gameController.updateProgram(0.16); // TODO create delta time
 
             // TODO: Move to Input Subsystem
             GLFW.glfwPollEvents();
