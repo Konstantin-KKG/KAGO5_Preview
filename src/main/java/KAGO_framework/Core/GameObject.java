@@ -2,16 +2,17 @@ package KAGO_framework.Core;
 
 import KAGO_framework.Core.Subsystems.Component;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameObject {
     public boolean active;
-    public Transform transform;
-    public ArrayList<Component> components;
+    private Transform transform;
+    private ArrayList<Component> components;
 
-    public GameObject(){
+    public GameObject(Component[] components) {
         active = true;
         transform = new Transform();
-        components = new ArrayList<>();
+        this.components = new ArrayList<Component>(Arrays.asList(components));
     }
 
     public void Start(){
@@ -28,5 +29,13 @@ public class GameObject {
 
     public void FixedUpdate(){
 
+    }
+
+    public ArrayList<Component> getComponents() {
+        return components;
+    }
+
+    public Transform getTransform() {
+        return transform;
     }
 }

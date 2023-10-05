@@ -48,7 +48,7 @@ public class GameManager implements Runnable {
             // Update Components
             GameObject[] gameObjects = SceneManager.GetAllActiveGameObjects();
             for (GameObject gameObject : gameObjects)
-                for (Component component : gameObject.components)
+                for (Component component : gameObject.getComponents())
                     SubsystemComponentDistributor.Distribute(component);
 
             // Update Subsystems
