@@ -12,6 +12,10 @@ public class RenderManager {
 
     private static ArrayList<Integer> vaos = new ArrayList<>();
     private static ArrayList<Integer> vbos = new ArrayList<>();
+
+    static int[] prepare(float[] vertices, int[] indices) {
+        return RenderManager.loadToVAO(vertices, indices);
+    }
     static int createVAO() {
         int vaoID = GL30.glGenVertexArrays();
         vaos.add(vaoID);
