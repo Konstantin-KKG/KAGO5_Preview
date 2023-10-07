@@ -13,6 +13,7 @@ public class Shader extends ShaderProgram{
 
     @Override
     protected void bindAttributes() {
-        super.bindAttribute(0, "position");
+        super.bindAttribute(0, "v_position");
+        super.bindAttribute(1, "v_color");
     }
 }
