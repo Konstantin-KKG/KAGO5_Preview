@@ -44,13 +44,14 @@ public class GameManager implements Runnable {
     private void loop() {
         long windowHandle = Window.GetWindowHandle();
         renderer = new Renderer(windowHandle);
-        renderer.DrawLine(-.5f,-.5f,.9f,.9f);
-        renderer.DrawLine(-.5f,-.5f,.9f,.8f);
-        renderer.DrawLine(-.5f,-.5f,.9f,.7f);
-        renderer.DrawLine(-.5f,-.5f,.9f,.6f);
-        renderer.DrawLine(-.5f,-.5f,.9f,.5f);
-        renderer.DrawRectangle(0,0,0.5f,0.5f);
-        renderer.DrawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
+        for (int i = 0; i < 1000000; i++) {
+            renderer.DrawLine(-.5f, -.5f, .9f, .9f);
+        }
+        /*for (int i = 0; i < 1000; i++) {
+            renderer.DrawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
+            renderer.DrawTriangle(-0.5f, -1f, 0.5f, -1f, 0.0f, 1f);
+        }*/
+
 
         while (!GLFW.glfwWindowShouldClose(windowHandle)) {
             // Update Components

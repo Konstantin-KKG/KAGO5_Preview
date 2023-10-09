@@ -5,28 +5,23 @@ import MyProject.Config;
 import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Renderer extends RendererBase {
 
-
     private int timer;
-    private long window;
+    private final long window;
     private int shaderProgram;
     private ArrayList<GraphicsObj> objects = new ArrayList<>();
-    private final float[] vertices = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f
-    };
-    private final float[] vertices2 = {
-            0.5f, 0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f
-    };
-    private final int[] indices = {0, 1, 2};
+    private ArrayList<Float> triangleVertices = new ArrayList<>();
+    private ArrayList<Integer> triangleIndices = new ArrayList<>();
+    private ArrayList<Float> lineVertices = new ArrayList<>();
+    private ArrayList<Integer> lineIndices = new ArrayList<>();
 
     public Renderer(long windowHandle) {
         this.window = windowHandle;
@@ -65,10 +60,34 @@ public class Renderer extends RendererBase {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
         glUseProgram(shaderProgram);
-        for (GraphicsObj object : objects) {
+        /*for (GraphicsObj object : objects) {
             object.Bind();
             glDrawElements(object.drawMode, object.getIndicesLength(), GL_UNSIGNED_INT,0L);
-        }
+        }*/
+        //Draw Lines
+        BufferObject vbo = new BufferObject(GL_ARRAY_BUFFER,ListToFloatArray(lineVertices));
+        BufferObject ebo = new BufferObject(GL_ELEMENT_ARRAY_BUFFER,ListToIntArray(lineIndices));
+
+        VertexArrayObject vao = new VertexArrayObject(vbo,ebo);
+        vao.AttributePointer(0,3);
+        vao.Bind();
+        vbo.Bind();
+        ebo.Bind();
+        glDrawElements(GL_LINES,lineIndices.size(),GL_UNSIGNED_INT,NULL);
+
+
+        //Draw Triangles
+        vbo = new BufferObject(GL_ARRAY_BUFFER,ListToFloatArray(triangleVertices));
+        ebo = new BufferObject(GL_ELEMENT_ARRAY_BUFFER,ListToIntArray(triangleIndices));
+
+        vao = new VertexArrayObject(vbo,ebo);
+        vao.AttributePointer(0,3);
+        vao.Bind();
+        vbo.Bind();
+        ebo.Bind();
+        glDrawElements(GL_TRIANGLES,triangleIndices.size(),GL_UNSIGNED_INT,NULL);
+
+
 
 
         // Poll for window events. The key callback above will only be
@@ -76,10 +95,41 @@ public class Renderer extends RendererBase {
         glfwPollEvents();
         glfwSwapBuffers(window); // swap the color buffers
 
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
         //}
+    }
+    @Override
+    public void DrawLine(float x1, float y1, float x2, float y2) {
+        lineIndices.addAll(List.of(0 + lineVertices.size(),1 + lineVertices.size()));
+        lineVertices.addAll(List.of(
+                x1, y1, 0.0f,
+                x2, y2, 0.0f));
     }
 
     @Override
+    public void DrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3) {
+        triangleIndices.addAll(List.of(0 + triangleVertices.size()/3, 1 + triangleVertices.size()/3, 2 + triangleVertices.size()/3));
+        triangleVertices.addAll(List.of(
+                x1, y1, 0.0f,
+                x2, y2, 0.0f,
+                x3, y3, 0.0f
+        ));
+    }
+
+    @Override
+    public void DrawRectangle(float x, float y, float width, float height) {
+        float[] verts = new float[]{
+                x, y, 0f,
+                x, y - height, 0f,
+                x + width, y, 0f,
+                x + width, y - height, 0f
+        };
+        int[] inds = new int[]{0, 1, 3, 3, 2, 0};
+        objects.add(new GraphicsObj(verts, inds, GL_TRIANGLES));
+    }
+    /*@Override
     public void DrawLine(float x1, float y1, float x2, float y2) {
         float[] verts = new float[]{
                 x1, y1, 0.0f,
@@ -110,7 +160,7 @@ public class Renderer extends RendererBase {
         int[] inds = new int[]{0, 1, 3, 3, 2, 0};
         objects.add(new GraphicsObj(verts, inds, GL_TRIANGLES));
     }
-
+*/
     //TODO Integrate Logging
     private boolean createShaders() {
         int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -172,5 +222,24 @@ public class Renderer extends RendererBase {
         return !failed;
     }
 
+
+    private <E extends Number> float[] ListToFloatArray(List<E> list){
+        float[] array = new float[list.size()];
+        int i = 0;
+
+        for (E number : list) {
+            array[i++] = number != null ? number.floatValue() : 0f;
+        }
+        return array;
+    }
+    private <E extends Number> int[] ListToIntArray(List<E> list){
+        int[] array = new int[list.size()];
+        int i = 0;
+
+        for (E number : list) {
+            array[i++] = number != null ? number.intValue() : 0;
+        }
+        return array;
+    }
 }
 
