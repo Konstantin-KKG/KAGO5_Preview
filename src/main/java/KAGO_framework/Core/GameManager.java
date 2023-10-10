@@ -2,6 +2,9 @@ package KAGO_framework.Core;
 
 import KAGO_framework.Core.Debug.Debug;
 import KAGO_framework.Core.Debug.LogType;
+import KAGO_framework.Core.SceneGraph.GameObject;
+import KAGO_framework.Core.SceneGraph.Scene;
+import KAGO_framework.Core.SceneGraph.SceneManager;
 import KAGO_framework.Core.Subsystems.Component;
 import KAGO_framework.Core.Subsystems.Graphics.Entrypoint;
 import KAGO_framework.Core.Subsystems.Graphics.Window;
@@ -15,7 +18,6 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 
 public class GameManager implements Runnable {
-    // References for future use
     private GameController gameController;
 
     long timer = System.currentTimeMillis();
@@ -40,8 +42,9 @@ public class GameManager implements Runnable {
         Debug.Log("Created/Load default GameScene.", LogType.LOG);
 
         // Create game controller
-        gameController = new GameController(this, scene);
+        gameController = new GameController(scene);
         Debug.Log("Created GameController.", LogType.LOG);
+        gameController.startProgram();
     }
 
     private void loop() {
@@ -51,11 +54,14 @@ public class GameManager implements Runnable {
             // Update Components
             GameObject[] gameObjects = SceneManager.GetAllActiveGameObjects();
             for (GameObject gameObject : gameObjects)
-                for (Component component : gameObject.components)
+                for (Component component : gameObject.getComponents())
                     SubsystemComponentDistributor.Distribute(component);
 
             // Update Subsystems
             SubsystemManager.UpdateSubsystems();
+
+            //Update game logic
+            gameController.updateProgram(0.16); // TODO create delta time
 
             // TODO: Move to Input Subsystem
             GLFW.glfwPollEvents();
